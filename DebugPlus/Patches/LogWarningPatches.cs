@@ -25,7 +25,7 @@ namespace DebugPlus.Patches
         [PatchPostfix]
         public static void PatchPostfix(object message)
         {
-            if (!DebugPlusConfig.unityEngineDebugLogObj.Value) return;
+            if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
             if (message.GetType() == typeof(string))
             {
@@ -53,7 +53,7 @@ namespace DebugPlus.Patches
         [PatchPostfix]
         public static void PatchPostfix(object message, Object context)
         {
-            if (!DebugPlusConfig.unityEngineDebugLogObj.Value) return;
+            if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
             if (message.GetType() == typeof(string))
             {
@@ -81,7 +81,7 @@ namespace DebugPlus.Patches
         [PatchPostfix]
         public static void PatchPostfix(string format, object[] args)
         {
-            if (!DebugPlusConfig.unityEngineDebugLogObj.Value) return;
+            if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
             Plugin.Log.LogWarning(Format.FormatString(format, args));
         }
@@ -103,7 +103,7 @@ namespace DebugPlus.Patches
         [PatchPostfix]
         public static void PatchPostfix(Object context, string format, object[] args)
         {
-            if (!DebugPlusConfig.unityEngineDebugLogObj.Value) return;
+            if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
             Plugin.Log.LogWarning($"GameObject: {context}\n{Format.FormatString(format, args)}");
         }

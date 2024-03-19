@@ -25,7 +25,7 @@ namespace DebugPlus.Patches
         [PatchPostfix]
         public static void PatchPostfix(Exception exception)
         {
-            if (!DebugPlusConfig.unityEngineDebugLogObj.Value) return;
+            if (!DebugPlusConfig.UnityExceptionLogging.Value) return;
 
             Plugin.Log.LogFatal(exception);
         }
@@ -47,7 +47,7 @@ namespace DebugPlus.Patches
         [PatchPostfix]
         public static void PatchPostfix(Exception exception, UnityEngine.Object context)
         {
-            if (!DebugPlusConfig.unityEngineDebugLogObj.Value) return;
+            if (!DebugPlusConfig.UnityExceptionLogging.Value) return;
 
             Plugin.Log.LogFatal($"GameObject: {context}\n {exception}");
         }

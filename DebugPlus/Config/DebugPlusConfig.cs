@@ -8,15 +8,39 @@ namespace DebugPlus.Config
     {
         private static readonly string header = "Debug Plus";
 
-        public static ConfigEntry<bool> unityEngineDebugLogObj;
+        public static ConfigEntry<bool> UnityInfoLogging;
+        public static ConfigEntry<bool> UnityWarningLogging;
+        public static ConfigEntry<bool> UnityErrorLogging;
+        public static ConfigEntry<bool> UnityExceptionLogging;
 
         public static void InitConfig(ConfigFile config)
         {
-            unityEngineDebugLogObj = config.Bind(
+            UnityInfoLogging = config.Bind(
                 header,
-                "Enable Base Logging",
+                "Enable Info Logging",
                 true,
-                new ConfigDescription("Enable UnityEngine.Debug.Log() output")
+                new ConfigDescription("Enable info output")
+                );
+
+            UnityWarningLogging = config.Bind(
+                header,
+                "Enable Warning Logging",
+                true,
+                new ConfigDescription("Enable warning output")
+                );
+
+            UnityErrorLogging = config.Bind(
+                header,
+                "Enable Error Logging",
+                true,
+                new ConfigDescription("Enable error output")
+                );
+
+            UnityExceptionLogging = config.Bind(
+                header,
+                "Enable Exception Logging",
+                true,
+                new ConfigDescription("Enable exception output")
                 );
         }
     }
