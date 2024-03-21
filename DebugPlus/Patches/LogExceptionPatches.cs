@@ -17,7 +17,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleCustom(m => m.Name == nameof(Debug.LogException)
+                .SingleDebug(m => m.Name == nameof(Debug.LogException)
                 && m.GetParameters()[0].Name == "exception"
                 && m.GetParameters().Length == 1);
         }
@@ -39,7 +39,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleCustom(m => m.Name == nameof(Debug.LogException)
+                .SingleDebug(m => m.Name == nameof(Debug.LogException)
                 && m.GetParameters()[0].Name == "exception"
                 && m.GetParameters().Length == 2);
         }

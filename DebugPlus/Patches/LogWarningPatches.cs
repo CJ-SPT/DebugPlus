@@ -17,7 +17,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleCustom(m => m.Name == nameof(Debug.LogWarning)
+                .SingleDebug(m => m.Name == nameof(Debug.LogWarning)
                 && m.GetParameters()[0].Name == "message"
                 && m.GetParameters().Length == 1);
         }
@@ -45,7 +45,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleCustom(m => m.Name == nameof(Debug.LogWarning)
+                .SingleDebug(m => m.Name == nameof(Debug.LogWarning)
                 && m.GetParameters()[0].Name == "message"
                 && m.GetParameters().Length == 2);
         }
@@ -73,7 +73,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleCustom(m => m.Name == nameof(Debug.LogWarningFormat)
+                .SingleDebug(m => m.Name == nameof(Debug.LogWarningFormat)
                 && m.GetParameters()[0].Name == "format"
                 && m.GetParameters().Length == 2);
         }
@@ -95,7 +95,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleCustom(m => m.Name == nameof(Debug.LogWarningFormat)
+                .SingleDebug(m => m.Name == nameof(Debug.LogWarningFormat)
                 && m.GetParameters()[0].Name == "context"
                 && m.GetParameters().Length == 3);
         }

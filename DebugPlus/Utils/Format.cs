@@ -25,9 +25,12 @@ namespace DebugPlus.Utils
             {
                 Plugin.Log.LogError($"Error formatting string: {format}");
 
-                for (int i = 0; i < args.Length; i++)
+                if (args != null)
                 {
-                    Plugin.Log.LogError($"  args[{i}] = {args[i]}");
+                    for (int i = 0; i < args.Length; i++)
+                    {
+                        Plugin.Log.LogError($"  args[{i}] = {args[i]}");
+                    }
                 }
                 return string.Empty;
             }
