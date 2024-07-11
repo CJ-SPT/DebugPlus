@@ -1,5 +1,4 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using DebugPlus.Config;
 using DebugPlus.Patches;
@@ -8,7 +7,7 @@ using DebugPlus.Patches;
 
 namespace DebugPlus
 {
-    [BepInPlugin("com.dirtbikercj.debugplus", "DebugPlus", "1.0.0")]
+    [BepInPlugin("com.dirtbikercj.debugplus", "DebugPlus", "1.0.1")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin? Instance;

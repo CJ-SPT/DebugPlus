@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
 	  <AssemblyName>DebugPlus</AssemblyName>
 	  <Description>Get better debugging information from EFT</Description>
-	  <Version>1.0.0</Version>
+	  <Version>1.0.1</Version>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -22,14 +22,14 @@
 		<Reference Include="Comfort">
 			<HintPath>$(SolutionDir)dependencies\Comfort.dll</HintPath>
 		</Reference>
+		<Reference Include="spt-reflection">
+		  <HintPath>..\dependencies\spt-reflection.dll</HintPath>
+		</Reference>
 		<Reference Include="UnityEngine.CoreModule">
 			<HintPath>$(SolutionDir)dependencies\UnityEngine.CoreModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine">
 			<HintPath>$(SolutionDir)dependencies\UnityEngine.dll</HintPath>
-		</Reference>
-		<Reference Include="Aki.reflection">
-			<HintPath>$(SolutionDir)dependencies\Aki.Reflection.dll</HintPath>
 		</Reference>
 		<Reference Include="Sirenix.Serialization">
 			<HintPath>$(SolutionDir)dependencies\Sirenix.Serialization.dll</HintPath>
@@ -64,7 +64,7 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="copy &quot;$(TargetPath)&quot; &quot;G:\3.8.0 - Dev\BepInEx\plugins\$(TargetName).dll&quot;&#xD;&#xA;if $(ConfigurationName) == Debug (&#xD;&#xA;    copy &quot;$(ProjectDir)$(OutDir)$(TargetName).pdb&quot; &quot;G:\3.8.0 - Dev\BepInEx\plugins\$(TargetName).pdb&quot;&#xD;&#xA;) else (&#xD;&#xA;    del &quot;G:\3.8.0 - Dev\BepInEx\plugins\$(TargetName).pdb&quot;&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;del &quot;G:\3.8.0 - Dev\BepInEx\config\com.dirtbikercj.debugplus.cfg&quot;" />
+		<Exec Command="copy &quot;$(TargetPath)&quot; &quot;G:\3.9.0 - Dev\BepInEx\plugins\$(TargetName).dll&quot;&#xD;&#xA;if $(ConfigurationName) == Debug (&#xD;&#xA;    copy &quot;$(ProjectDir)$(OutDir)$(TargetName).pdb&quot; &quot;G:\3.9.0 - Dev\BepInEx\plugins\$(TargetName).pdb&quot;&#xD;&#xA;) else (&#xD;&#xA;    del &quot;G:\3.9.0 - Dev\BepInEx\plugins\$(TargetName).pdb&quot;&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;del &quot;G:\3.9.0 - Dev\BepInEx\config\com.dirtbikercj.debugplus.cfg&quot;" />
 	</Target>
 
 

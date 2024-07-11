@@ -1,11 +1,9 @@
-﻿using Aki.Reflection.Patching;
-using HarmonyLib;
-using System.Reflection;
-using Aki.Reflection.Utils;
-using UnityEngine;
+﻿using DebugPlus.Config;
 using DebugPlus.Utils;
-using DebugPlus.Config;
-
+using HarmonyLib;
+using SPT.Reflection.Patching;
+using System.Reflection;
+using UnityEngine;
 
 namespace DebugPlus.Patches
 {
@@ -17,7 +15,7 @@ namespace DebugPlus.Patches
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.GetDeclaredMethods(typeof(Debug))
-                .SingleDebug(m => m.Name == nameof(Debug.Log) 
+                .SingleDebug(m => m.Name == nameof(Debug.Log)
                 && m.GetParameters()[0].Name == "message"
                 && m.GetParameters().Length == 1);
         }

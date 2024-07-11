@@ -1,8 +1,7 @@
-﻿using Aki.Reflection.Patching;
-using Aki.Reflection.Utils;
-using DebugPlus.Config;
+﻿using DebugPlus.Config;
 using DebugPlus.Utils;
 using HarmonyLib;
+using SPT.Reflection.Patching;
 using System.Reflection;
 using UnityEngine;
 
