@@ -74,8 +74,6 @@ public class BotZoneRenderer : MonoBehaviour
 		
 		var pointInfo = new SpawnPointInfo()
 		{
-			Position = spawnPoint.Position,
-			ParentZone = zone,
 			Sphere = sphere,
 			Content = infoText
 		};
@@ -106,8 +104,6 @@ public class BotZoneRenderer : MonoBehaviour
 	
 	private class SpawnPointInfo
 	{
-		public Vector3 Position;
-		public BotZone ParentZone;
 		public GameObject Sphere;
 		public string Content;
 	}
