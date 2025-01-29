@@ -13,7 +13,7 @@ namespace DebugPlus.Components;
 ///
 /// Credits: DrakiaXYZ for the overlay code
 /// </summary>
-public class BotZoneRenderer : OverlayProvider
+public class BotZoneRenderer : MonoBehaviour
 {
 	private List<BotZone> _botZones = [];
 	private readonly List<SpawnPointInfo> _spawnPointInfos = [];
