@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Comfort.Common;
-using EFT;
+using DebugPlus.Utils;
 using EFT.Game.Spawning;
 using UnityEngine;
+
+using OCB = DebugPlus.Utils.OverlayContentBuilder;
 
 namespace DebugPlus.Components;
 
@@ -13,22 +13,18 @@ namespace DebugPlus.Components;
 ///
 /// Credits: DrakiaXYZ for the overlay code
 /// </summary>
-public class BotZoneRenderer : MonoBehaviour
+public class BotZoneRenderer : OverlayProvider
 {
 	private List<BotZone> _botZones = [];
-	private List<SpawnPointInfo> _spawnPointInfos = [];
-	
-	private StringBuilder _sb = new();
-	private GUIStyle guiStyle;
-	private float _screenScale = 1.0f;
-	
-	private static Player _player => Singleton<GameWorld>.Instance.MainPlayer;
+	private readonly List<SpawnPointInfo> _spawnPointInfos = [];
 	
 	public void RefreshZones()
 	{
 		// This method is just lol, but works for this use case.
 		_botZones = LocationScene.GetAllObjectsAndWhenISayAllIActuallyMeanIt<BotZone>()
 			.ToList();
+		
+		_spawnPointInfos.Clear();
 		
 		foreach (var zone in _botZones)
 		{
@@ -38,46 +34,15 @@ public class BotZoneRenderer : MonoBehaviour
 	
 	private void Awake()
 	{
-		// If DLSS or FSR are enabled, set a screen scale value
-		if (CameraClass.Instance.SSAA.isActiveAndEnabled)
-		{
-			_screenScale = (float)CameraClass.Instance.SSAA.GetOutputWidth() / (float)CameraClass.Instance.SSAA.GetInputWidth();
-			Plugin.Log.LogDebug($"DLSS or FSR is enabled, scale screen offsets by {_screenScale}");
-		}
-		
 		RefreshZones();
-	}
-
-	private void OnGUI()
-	{
-		// TODO: Add config entry to show/hide here
 		
-		if (guiStyle is null)
+		foreach (var point in _spawnPointInfos)
 		{
-			CreateGuiStyle();
-		}
-
-		foreach (var spawnPoint in _spawnPointInfos)
-		{
-			var pos = spawnPoint.Position;
-			var dist = Mathf.RoundToInt((spawnPoint.Position - _player.Transform.position).magnitude);
-			
-			if (spawnPoint.GUIContent.text.Length <= 0 || !(dist < 200f)) continue;
-			
-			var screenPos = Camera.main!.WorldToScreenPoint(pos + (Vector3.up * 1.5f));
-			
-			// Skip points behind the camera.
-			if (screenPos.z <= 0) continue;
-			
-			var guiSize = guiStyle.CalcSize(spawnPoint.GUIContent);
-			spawnPoint.GUIRect.x = (screenPos.x * _screenScale) - (guiSize.x / 2);
-			spawnPoint.GUIRect.y = Screen.height - ((screenPos.y * _screenScale) + guiSize.y);
-			spawnPoint.GUIRect.size = guiSize;
-
-			GUI.Box(spawnPoint.GUIRect, spawnPoint.GUIContent, guiStyle);
+			point.Sphere.GetOrAddComponent<OverlayProvider>()
+				.SetOverlayContent(point.Content);
 		}
 	}
-
+	
 	private void OnDestroy()
 	{
 		foreach (var obj in _spawnPointInfos.ToArray())
@@ -88,7 +53,7 @@ public class BotZoneRenderer : MonoBehaviour
 
 	private void IterateSpawnPoints(BotZone zone)
 	{
-		var zoneColor = CreateRandomZoneColor();
+		var zoneColor = GetRandomColor();
 		
 		foreach (var spawnPoint in zone.SpawnPoints)
 		{
@@ -112,75 +77,26 @@ public class BotZoneRenderer : MonoBehaviour
 			Position = spawnPoint.Position,
 			ParentZone = zone,
 			Sphere = sphere,
-			GUIContent = new GUIContent()
-			{
-				text = infoText,
-			},
-			GUIRect = new Rect()
+			Content = infoText
 		};
 		
 		_spawnPointInfos.Add(pointInfo);
 	}
 
-	private string GetPointInfoText(ISpawnPoint spawnPoint, BotZone zone)
+	private static string GetPointInfoText(ISpawnPoint spawnPoint, BotZone zone)
 	{
-		// Make sure we clear the string builder before trying to build a new point.
-		_sb.Clear();
+		OCB.Clear();
 		
-		AppendLabeledValue("BotZone Id", zone.Id.ToString(), Color.gray, Color.green);
-		AppendLabeledValue("Spawn Point Name", spawnPoint.Name, Color.gray, Color.green);
-		AppendLabeledValue("Position", spawnPoint.Position.ToString(), Color.gray, Color.green);
-		AppendLabeledValue("Side Mask", spawnPoint.Sides.ToString(), Color.gray, Color.green);
-		AppendLabeledValue("IsSniper", spawnPoint.IsSnipeZone.ToString(), Color.gray, Color.green);
+		OCB.AppendLabeledValue("BotZone Id", zone.Id.ToString(), Color.gray, Color.green);
+		OCB.AppendLabeledValue("Spawn Point Name", spawnPoint.Name, Color.gray, Color.green);
+		OCB.AppendLabeledValue("Position", spawnPoint.Position.ToString(), Color.gray, Color.green);
+		OCB.AppendLabeledValue("Side Mask", spawnPoint.Sides.ToString(), Color.gray, Color.green);
+		OCB.AppendLabeledValue("IsSniper", spawnPoint.IsSnipeZone.ToString(), Color.gray, Color.green);
 		
-		return _sb.ToString();
+		return OCB.ToString();
 	}
 	
-	private void CreateGuiStyle()
-	{
-		guiStyle = new GUIStyle(GUI.skin.box)
-		{
-			alignment = TextAnchor.MiddleLeft,
-			fontSize = 16, // TODO: Add config for font size
-			margin = new RectOffset(3, 3, 3, 3),
-			richText = true
-		};
-	}
-
-	private void AppendLabeledValue(string label, string data, Color labelColor, Color dataColor, bool labelEnabled = true)
-	{
-		var labelColorString = GetColorString(labelColor);
-		var dataColorString = GetColorString(dataColor);
-
-		AppendLabeledValue(label, data, labelColorString, dataColorString, labelEnabled);
-	}
-	
-	private void AppendLabeledValue(string label, string data, string labelColor, string dataColor, bool labelEnabled = true)
-	{
-		if (labelEnabled)
-		{
-			_sb.AppendFormat("<color={0}>{1}:</color>", labelColor, label);
-		}
-
-		_sb.AppendFormat(" <color={0}>{1}</color>\n", dataColor, data);
-	}
-	
-	private static string GetColorString(Color color)
-	{
-		if (color == Color.black) return "black";
-		if (color == Color.white) return "white";
-		if (color == Color.yellow) return "yellow";
-		if (color == Color.red) return "red";
-		if (color == Color.green) return "green";
-		if (color == Color.blue) return "blue";
-		if (color == Color.cyan) return "cyan";
-		if (color == Color.magenta) return "magenta";
-		if (color == Color.gray) return "gray";
-		if (color == Color.clear) return "clear";
-		return "#" + ColorUtility.ToHtmlStringRGB(color);
-	}
-	
-	private static Color CreateRandomZoneColor()
+	private static Color GetRandomColor()
 	{
 		return new Color(
 			Random.Range(0f, 1f), 
@@ -193,7 +109,6 @@ public class BotZoneRenderer : MonoBehaviour
 		public Vector3 Position;
 		public BotZone ParentZone;
 		public GameObject Sphere;
-		public GUIContent GUIContent;
-		public Rect GUIRect;
+		public string Content;
 	}
 }
