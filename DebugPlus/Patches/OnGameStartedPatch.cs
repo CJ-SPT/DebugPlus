@@ -17,5 +17,6 @@ public class OnGameStartedPatch : ModulePatch
     private static void PatchPrefix(GameWorld __instance)
     {
         __instance.GetOrAddComponent<PlayerComponent>();
+        __instance.GetOrAddComponent<BotZoneRenderer>();
     }
 }
