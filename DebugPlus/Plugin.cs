@@ -9,7 +9,7 @@ using DrakiaXYZ.VersionChecker;
 
 namespace DebugPlus;
 
-[BepInPlugin("com.dirtbikercj.debugplus", "DebugPlus", "1.0.2")]
+[BepInPlugin("com.dirtbikercj.debugplus", "DebugPlus", "1.1.0")]
 public class Plugin : BaseUnityPlugin
 {
 	public const int TarkovVersion = 33420;
