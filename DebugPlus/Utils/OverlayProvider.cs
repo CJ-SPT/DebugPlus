@@ -1,9 +1,10 @@
-﻿using System;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DebugPlus.Utils;
 
+/// <summary>
+/// Credits: DrakiaXYZ for the overlay code
+/// </summary>
 public class OverlayProvider : MonoBehaviour
 {
 	private GUIStyle guiStyle;

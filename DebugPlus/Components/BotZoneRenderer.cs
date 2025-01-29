@@ -10,8 +10,6 @@ namespace DebugPlus.Components;
 
 /// <summary>
 /// Renders spawn point information for bot zones
-///
-/// Credits: DrakiaXYZ for the overlay code
 /// </summary>
 public class BotZoneRenderer : MonoBehaviour
 {
