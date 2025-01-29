@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using DebugPlus.Config;
+using UnityEngine;
 
 namespace DebugPlus.Utils;
 
@@ -12,6 +14,8 @@ public class OverlayProvider : MonoBehaviour
 
 	private GUIContent _content = new();
 	private Rect _rect = new();
+
+	private Func<bool> _enabled;
 	
 	private void Awake()
 	{
@@ -27,11 +31,13 @@ public class OverlayProvider : MonoBehaviour
 		{
 			CreateGuiStyle();
 		}
+
+		if (!_enabled()) return;
 		
 		var pos = transform.position;
 		var dist = Mathf.RoundToInt((transform.position - Camera.main!.transform.position).magnitude);
 		
-		if (_content.text.Length <= 0 || !(dist < 200f)) return;
+		if (_content.text.Length <= 0 || !(dist < DebugPlusConfig.OverlayMaxDist.Value)) return;
 		
 		var screenPos = Camera.main!.WorldToScreenPoint(pos + (Vector3.up * 1.5f));
 		
@@ -43,8 +49,9 @@ public class OverlayProvider : MonoBehaviour
 		GUI.Box(_rect, _content, guiStyle);
 	}
 
-	public void SetOverlayContent(string content)
+	public void SetOverlayContent(string content, Func<bool> shouldShow)
 	{
+		_enabled = shouldShow;
 		_content.text = content;
 	}
 	
@@ -67,7 +74,7 @@ public class OverlayProvider : MonoBehaviour
 		guiStyle = new GUIStyle(GUI.skin.box)
 		{
 			alignment = TextAnchor.MiddleLeft,
-			fontSize = 16, // TODO: Add config for font size
+			fontSize = DebugPlusConfig.OverlayFontSize.Value, // TODO: Add config for font size
 			margin = new RectOffset(3, 3, 3, 3),
 			richText = true
 		};

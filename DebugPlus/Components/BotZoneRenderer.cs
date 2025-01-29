@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DebugPlus.Config;
 using DebugPlus.Utils;
 using EFT.Game.Spawning;
 using UnityEngine;
@@ -28,17 +29,17 @@ public class BotZoneRenderer : MonoBehaviour
 		{
 			IterateSpawnPoints(zone);
 		}
+		
+		foreach (var point in _spawnPointInfos)
+		{
+			point.Sphere.GetOrAddComponent<OverlayProvider>()
+				.SetOverlayContent(point.Content, () => DebugPlusConfig.ShowSpawnPointOverlays.Value);
+		}
 	}
 	
 	private void Awake()
 	{
 		RefreshZones();
-		
-		foreach (var point in _spawnPointInfos)
-		{
-			point.Sphere.GetOrAddComponent<OverlayProvider>()
-				.SetOverlayContent(point.Content);
-		}
 	}
 	
 	private void OnDestroy()
