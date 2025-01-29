@@ -84,6 +84,7 @@ public class BotZoneRenderer : MonoBehaviour
 	{
 		OCB.Clear();
 		
+		OCB.AppendLabeledValue("BotZone Name", zone.ShortName, Color.gray, Color.green);
 		OCB.AppendLabeledValue("BotZone Id", zone.Id.ToString(), Color.gray, Color.green);
 		OCB.AppendLabeledValue("Spawn Point Name", spawnPoint.Name, Color.gray, Color.green);
 		OCB.AppendLabeledValue("Position", spawnPoint.Position.ToString(), Color.gray, Color.green);
