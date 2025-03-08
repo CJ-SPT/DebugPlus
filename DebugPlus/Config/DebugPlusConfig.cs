@@ -45,6 +45,7 @@ internal static class DebugPlusConfig
     public static ConfigEntry<int> OverlayFontSize { get; private set; }
     public static ConfigEntry<float> OverlayMaxDist { get; private set; }
     public static ConfigEntry<bool> ShowSpawnPointOverlays { get; private set; }
+    public static ConfigEntry<bool> ShowDoorOverlays { get; private set; }
 
     #endregion
     
@@ -179,10 +180,19 @@ internal static class DebugPlusConfig
         
         ConfigEntries.Add(ShowSpawnPointOverlays = config.Bind(
             Overlays,
-            "Show spawn point overlay",
+            "Spawn point overlay",
             false,
             new ConfigDescription(
-                "Shows overlays with information above each spawn point.",
+                "Shows overlay with information above each spawn point.",
+                null,
+                new ConfigurationManagerAttributes { })));
+        
+        ConfigEntries.Add(ShowDoorOverlays = config.Bind(
+            Overlays,
+            "Door overlay",
+            false,
+            new ConfigDescription(
+                "Shows overlay with information above door.",
                 null,
                 new ConfigurationManagerAttributes { })));
     }

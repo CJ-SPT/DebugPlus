@@ -12,7 +12,7 @@ namespace DebugPlus.Components;
 /// <summary>
 /// Renders spawn point information for bot zones
 /// </summary>
-public class BotZoneRenderer : MonoBehaviour
+public class SpawnPointDebug : MonoBehaviour
 {
 	private List<BotZone> _botZones = [];
 	private readonly List<SpawnPointInfo> _spawnPointInfos = [];
@@ -33,7 +33,7 @@ public class BotZoneRenderer : MonoBehaviour
 		foreach (var point in _spawnPointInfos)
 		{
 			point.Sphere.GetOrAddComponent<OverlayProvider>()
-				.SetOverlayContent(point.Content, () => DebugPlusConfig.ShowSpawnPointOverlays.Value);
+				.SetOverlayContent(point.Content, Enable);
 		}
 	}
 	
@@ -100,6 +100,11 @@ public class BotZoneRenderer : MonoBehaviour
 			Random.Range(0f, 1f), 
 			Random.Range(0f, 1f), 
 			Random.Range(0f, 1f));
+	}
+	
+	private static bool Enable()
+	{
+		return DebugPlusConfig.ShowSpawnPointOverlays.Value;
 	}
 	
 	private class SpawnPointInfo
