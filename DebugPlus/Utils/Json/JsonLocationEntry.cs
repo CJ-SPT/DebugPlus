@@ -9,7 +9,7 @@ public class JsonLocationEntry
     public Color labelColor;
     public Color textColor;
     public Color objectColor;
-    public string objectType;
+    public PrimitiveType objectType;
     public Vector3 objectScale;
     public bool physics;
 }
