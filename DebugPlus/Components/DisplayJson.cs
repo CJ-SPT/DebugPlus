@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Comfort.Common;
 using DebugPlus.Config;
@@ -9,32 +10,34 @@ namespace DebugPlus.Components;
 
 public class DisplayJson : MonoBehaviour
 {
-    private List<GameObject> spheres;
+    private readonly List<JsonDisplayInfo> _jsonDisplayInfos = [];
 
-    private PrimitiveType GetPrimitiveType(string type)
+    public void RefreshDisplays(object obj, EventArgs e)
     {
-        switch (type.ToLower())
+        if (!Enable())
         {
-            case "Sphere":
-                return PrimitiveType.Sphere;
-            case "Capsule":
-                return PrimitiveType.Capsule;
-            case "Cylinder":
-                return PrimitiveType.Cylinder;
-            case "Cube":
-                return PrimitiveType.Cube;
-            case "Plane":
-                return PrimitiveType.Plane;
-            case "Quad":
-                return PrimitiveType.Quad;
-            default:
-                return PrimitiveType.Sphere;
+            foreach (var point in _jsonDisplayInfos)
+            {
+                Destroy(point.RenderedObject);
+            }
+
+            _jsonDisplayInfos.Clear();
+            return;
+        }
+
+        _jsonDisplayInfos.Clear();
+
+        CreateJsonDisplays();
+
+        foreach (var point in _jsonDisplayInfos)
+        {
+            point.RenderedObject.GetOrAddComponent<OverlayProvider>()
+                .SetOverlayContent(point.Content, Enable);
         }
     }
 
-    private void Awake()
+    private void CreateJsonDisplays()
     {
-        spheres = new List<GameObject>();
         string filepath = "/BepInEx/plugins/file.json";
         LocationsJson locationJson = JsonHelper.ParseJsonFromFile<LocationsJson>(filepath);
         Plugin.Log.LogInfo(JsonHelper.SerializeJson(locationJson));
@@ -43,17 +46,39 @@ public class DisplayJson : MonoBehaviour
 
         foreach (JsonLocationEntry location in locationJson.locations[mapName])
         {
-            GameObject renderedObject = GameObject.CreatePrimitive(GetPrimitiveType(location.objectType));
+            GameObject renderedObject = GameObject.CreatePrimitive(location.objectType);
             renderedObject.GetComponent<Collider>().enabled = location.physics;
             renderedObject.transform.position = location.coordinates;
             renderedObject.transform.localScale = location.objectScale;
             renderedObject.GetComponent<Renderer>().material.color = location.objectColor;
             Plugin.Log.LogInfo(location.text);
 
-            renderedObject.GetOrAddComponent<OverlayProvider>().SetOverlayContent(GetJsonText(location), Enable);
+            var jsonDisplayInfo = new JsonDisplayInfo()
+            {
+                RenderedObject = renderedObject,
+                Content = GetJsonText(location)
+            };
 
-            spheres.Add(renderedObject);
+            _jsonDisplayInfos.Add(jsonDisplayInfo);
         }
+    }
+
+    private void Awake()
+    {
+        RefreshDisplays(null, null);
+
+        DebugPlusConfig.ShowJsonOverlay.SettingChanged += RefreshDisplays;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var obj in _jsonDisplayInfos.ToArray())
+        {
+            Destroy(obj.RenderedObject);
+            _jsonDisplayInfos.Remove(obj);
+        }
+
+        DebugPlusConfig.ShowJsonOverlay.SettingChanged -= RefreshDisplays;
     }
 
     private static bool Enable()
@@ -68,5 +93,11 @@ public class DisplayJson : MonoBehaviour
         OCB.AppendLabeledValue(entry.label, entry.text, entry.labelColor, entry.textColor);
 
         return OCB.ToString();
+    }
+
+    private class JsonDisplayInfo
+    {
+        public GameObject RenderedObject;
+        public string Content;
     }
 }
