@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DebugPlus.Config;
 using DebugPlus.Utils;
 using EFT.Game.Spawning;
 using UnityEngine;
-
+using Object = UnityEngine.Object;
 using OCB = DebugPlus.Utils.OverlayContentBuilder;
+using Random = UnityEngine.Random;
 
 namespace DebugPlus.Components;
 
@@ -17,8 +19,19 @@ public class SpawnPointDebug : MonoBehaviour
 	private List<BotZone> _botZones = [];
 	private readonly List<SpawnPointInfo> _spawnPointInfos = [];
 	
-	public void RefreshZones()
+	public void RefreshZones(object obj, EventArgs e)
 	{
+		if (!Enable())
+		{
+			foreach (var point in _spawnPointInfos)
+			{
+				Destroy(point.Sphere);
+			}
+
+			_spawnPointInfos.Clear();
+			return;
+		}
+		
 		// This method is just lol, but works for this use case.
 		_botZones = LocationScene.GetAllObjectsAndWhenISayAllIActuallyMeanIt<BotZone>()
 			.ToList();
@@ -39,15 +52,21 @@ public class SpawnPointDebug : MonoBehaviour
 	
 	private void Awake()
 	{
-		RefreshZones();
+		RefreshZones(null, null);
+		
+		DebugPlusConfig.ShowSpawnPointOverlays.SettingChanged += RefreshZones; 
 	}
+
 	
 	private void OnDestroy()
 	{
 		foreach (var obj in _spawnPointInfos.ToArray())
 		{
+			Destroy(obj.Sphere);
 			_spawnPointInfos.Remove(obj);
 		}
+		
+		DebugPlusConfig.ShowSpawnPointOverlays.SettingChanged -= RefreshZones; 
 	}
 
 	private void IterateSpawnPoints(BotZone zone)
