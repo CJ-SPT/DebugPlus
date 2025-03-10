@@ -10,6 +10,28 @@ namespace DebugPlus.Components;
 public class DisplayJson : MonoBehaviour
 {
     private List<GameObject> spheres;
+
+    private PrimitiveType GetPrimitiveType(string type)
+    {
+        switch (type.ToLower())
+        {
+            case "Sphere":
+                return PrimitiveType.Sphere;
+            case "Capsule":
+                return PrimitiveType.Capsule;
+            case "Cylinder":
+                return PrimitiveType.Cylinder;
+            case "Cube":
+                return PrimitiveType.Cube;
+            case "Plane":
+                return PrimitiveType.Plane;
+            case "Quad":
+                return PrimitiveType.Quad;
+            default:
+                return PrimitiveType.Sphere;
+        }
+    }
+
     private void Awake()
     {
         spheres = new List<GameObject>();
@@ -19,18 +41,18 @@ public class DisplayJson : MonoBehaviour
         string mapName = Singleton<EFT.GameWorld>.Instance.MainPlayer.Location.ToLower();
         Plugin.Log.LogInfo("Loading: " + mapName);
 
-        foreach (var location in locationJson.locations[mapName])
+        foreach (JsonLocationEntry location in locationJson.locations[mapName])
         {
-            var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            sphere.GetComponent<Collider>().enabled = location.physics;
-            sphere.transform.position = location.coordinates;
-            sphere.transform.localScale = location.objectScale;
-            sphere.GetComponent<Renderer>().material.color = location.objectColor;
+            GameObject renderedObject = GameObject.CreatePrimitive(GetPrimitiveType(location.objectType));
+            renderedObject.GetComponent<Collider>().enabled = location.physics;
+            renderedObject.transform.position = location.coordinates;
+            renderedObject.transform.localScale = location.objectScale;
+            renderedObject.GetComponent<Renderer>().material.color = location.objectColor;
             Plugin.Log.LogInfo(location.text);
 
-            sphere.GetOrAddComponent<OverlayProvider>().SetOverlayContent(GetJsonText(location), Enable);
+            renderedObject.GetOrAddComponent<OverlayProvider>().SetOverlayContent(GetJsonText(location), Enable);
 
-            spheres.Add(sphere);
+            spheres.Add(renderedObject);
         }
     }
 
