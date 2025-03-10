@@ -1,0 +1,52 @@
+{
+    "locations":
+    {
+        "factory4_day":
+        [
+            {
+                "coordinates": { "x": -19.473001, "y": 0.518, "z": -52.22601 },
+                "label": "Example Label",
+                "text": "Example text",
+                "labelColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "textColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectType": "sphere",
+                "objectScale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+                "physics": false
+            },
+            {
+                "coordinates": { "x": 1.1111, "y": 2.2222, "z": 3.3333 },
+                "label": "Example Label",
+                "text": "Example text",
+                "labelColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "textColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectType": "sphere",
+                "objectScale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+                "physics": false
+            },
+            {
+                "coordinates": { "x": 1.1111, "y": 2.2222, "z": 3.3333 },
+                "label": "Example Label",
+                "text": "Example text",
+                "labelColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "textColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectType": "sphere",
+                "objectScale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+                "physics": false
+            },
+            {
+                "coordinates": { "x": 1.1111, "y": 2.2222, "z": 3.3333 },
+                "label": "Example Label",
+                "text": "Example text",
+                "labelColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "textColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+                "objectType": "sphere",
+                "objectScale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+                "physics": false
+            }
+        ]
+    }
+}

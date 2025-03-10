@@ -12,12 +12,13 @@ public class OnGameStartedPatch : ModulePatch
     {
         return AccessTools.Method(typeof(GameWorld), nameof(GameWorld.OnGameStarted));
     }
-    
+
     [PatchPrefix]
     private static void PatchPrefix(GameWorld __instance)
     {
         __instance.GetOrAddComponent<PlayerComponent>();
         __instance.GetOrAddComponent<SpawnPointDebug>();
         __instance.GetOrAddComponent<DoorDebug>();
+        __instance.GetOrAddComponent<DisplayJson>();
     }
 }
