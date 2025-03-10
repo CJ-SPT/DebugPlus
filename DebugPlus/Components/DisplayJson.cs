@@ -44,6 +44,11 @@ public class DisplayJson : MonoBehaviour
         string mapName = Singleton<EFT.GameWorld>.Instance.MainPlayer.Location.ToLower();
         Plugin.Log.LogInfo("Loading: " + mapName);
 
+        if (!locationJson.locations.ContainsKey(mapName))
+        {
+            return;
+        }
+
         foreach (JsonLocationEntry location in locationJson.locations[mapName])
         {
             GameObject renderedObject = GameObject.CreatePrimitive(location.objectType);
