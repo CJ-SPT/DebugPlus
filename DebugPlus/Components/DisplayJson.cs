@@ -96,7 +96,7 @@ public class DisplayJson : MonoBehaviour
     {
         OCB.Clear();
 
-        OCB.AppendLabeledValue(entry.label, entry.text, entry.labelColor, entry.textColor);
+        OCB.AppendLabeledValue(entry.label, entry.text, entry.labelColor, entry.textColor, entry.label.Length > 0);
 
         return OCB.ToString();
     }
