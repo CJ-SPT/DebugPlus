@@ -38,9 +38,9 @@ public class DisplayJson : MonoBehaviour
 
     private void CreateJsonDisplays()
     {
-        string filepath = "/BepInEx/plugins/file.json";
+        string filepath = "/BepInEx/plugins/points.json";
         LocationsJson locationJson = JsonHelper.ParseJsonFromFile<LocationsJson>(filepath);
-        Plugin.Log.LogInfo(JsonHelper.SerializeJson(locationJson));
+        //Plugin.Log.LogInfo(JsonHelper.SerializeJson(locationJson));
         string mapName = Singleton<EFT.GameWorld>.Instance.MainPlayer.Location.ToLower();
         Plugin.Log.LogInfo("Loading: " + mapName);
 
