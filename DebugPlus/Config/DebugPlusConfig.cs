@@ -182,7 +182,7 @@ internal static class DebugPlusConfig
 
         ConfigEntries.Add(OverlayUpDist = config.Bind(
             Overlays,
-            "Render distance",
+            "Distance Above Point",
             1.5f,
             new ConfigDescription(
                 "Distance the overlay is above the objects",
