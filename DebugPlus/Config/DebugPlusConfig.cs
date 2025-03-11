@@ -44,6 +44,7 @@ internal static class DebugPlusConfig
 
     public static ConfigEntry<int> OverlayFontSize { get; private set; }
     public static ConfigEntry<float> OverlayMaxDist { get; private set; }
+    public static ConfigEntry<float> OverlayUpDist { get; private set; }
     public static ConfigEntry<bool> ShowSpawnPointOverlays { get; private set; }
     public static ConfigEntry<bool> ShowDoorOverlays { get; private set; }
     public static ConfigEntry<bool> ShowJsonOverlay { get; private set; }
@@ -177,6 +178,15 @@ internal static class DebugPlusConfig
             new ConfigDescription(
                 "Max distance to render an overlay",
                 new AcceptableValueRange<float>(0f, 1000f),
+                new ConfigurationManagerAttributes { })));
+
+        ConfigEntries.Add(OverlayUpDist = config.Bind(
+            Overlays,
+            "Render distance",
+            1.5f,
+            new ConfigDescription(
+                "Distance the overlay is above the objects",
+                new AcceptableValueRange<float>(0f, 5f),
                 new ConfigurationManagerAttributes { })));
         
         ConfigEntries.Add(ShowSpawnPointOverlays = config.Bind(
