@@ -46,6 +46,7 @@ public class DisplayJson : MonoBehaviour
 
         if (!locationJson.locations.ContainsKey(mapName))
         {
+            Plugin.Log.LogInfo("No entries on map: " + mapName);
             return;
         }
 
