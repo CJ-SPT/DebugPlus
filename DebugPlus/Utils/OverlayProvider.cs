@@ -39,7 +39,7 @@ public class OverlayProvider : MonoBehaviour
 		
 		if (_content.text.Length <= 0 || !(dist < DebugPlusConfig.OverlayMaxDist.Value)) return;
 		
-		var screenPos = Camera.main!.WorldToScreenPoint(pos + (Vector3.up * 1.5f));
+		var screenPos = Camera.main!.WorldToScreenPoint(pos + (Vector3.up * DebugPlusConfig.OverlayUpDist.Value));
 		
 		// Don't render behind the camera.
 		if (screenPos.z <= 0) return;

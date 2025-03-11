@@ -44,18 +44,20 @@ internal static class DebugPlusConfig
 
     public static ConfigEntry<int> OverlayFontSize { get; private set; }
     public static ConfigEntry<float> OverlayMaxDist { get; private set; }
+    public static ConfigEntry<float> OverlayUpDist { get; private set; }
     public static ConfigEntry<bool> ShowSpawnPointOverlays { get; private set; }
     public static ConfigEntry<bool> ShowDoorOverlays { get; private set; }
+    public static ConfigEntry<bool> ShowJsonOverlay { get; private set; }
 
     #endregion
-    
+
     public static void InitConfig(ConfigFile config)
     {
         LoggingConfig(config);
         PlayerConfig(config);
         BsgDebugConfig(config);
         OverlayConfig(config);
-        
+
         RecalcOrder();
     }
 
@@ -177,6 +179,15 @@ internal static class DebugPlusConfig
                 "Max distance to render an overlay",
                 new AcceptableValueRange<float>(0f, 1000f),
                 new ConfigurationManagerAttributes { })));
+
+        ConfigEntries.Add(OverlayUpDist = config.Bind(
+            Overlays,
+            "Distance Above Point",
+            1.5f,
+            new ConfigDescription(
+                "Distance the overlay is above the objects",
+                new AcceptableValueRange<float>(0f, 5f),
+                new ConfigurationManagerAttributes { })));
         
         ConfigEntries.Add(ShowSpawnPointOverlays = config.Bind(
             Overlays,
@@ -193,6 +204,15 @@ internal static class DebugPlusConfig
             false,
             new ConfigDescription(
                 "Shows overlay with information above door.",
+                null,
+                new ConfigurationManagerAttributes { })));
+
+        ConfigEntries.Add(ShowJsonOverlay = config.Bind(
+            Overlays,
+            "Json overlay",
+            false,
+            new ConfigDescription(
+                "Shows overlay custom information loaded from Json.",
                 null,
                 new ConfigurationManagerAttributes { })));
     }
