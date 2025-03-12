@@ -93,22 +93,22 @@ public class DisplayJson : MonoBehaviour
 
     private Material GetMaterial()
     {
-        if (DisplayJson.mat == null)
+        if (mat == null)
         {
             Plugin.Log.LogInfo("Generating new material!");
-            DisplayJson.mat = new Material(Shader.Find("Transparent/Diffuse"));
+            mat = new Material(Shader.Find("Transparent/Diffuse"));
 
-            DisplayJson.mat.SetOverrideTag("RenderType", "Transparent");
-            DisplayJson.mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            DisplayJson.mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            DisplayJson.mat.SetInt("_ZWrite", 0);
-            DisplayJson.mat.DisableKeyword("_ALPHATEST_ON");
-            DisplayJson.mat.EnableKeyword("_ALPHABLEND_ON");
-            DisplayJson.mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.SetOverrideTag("RenderType", "Transparent");
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 
-            DisplayJson.mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
         }
-        return DisplayJson.mat;
+        return mat;
     }
 
     private void Awake()
