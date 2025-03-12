@@ -11,6 +11,7 @@ namespace DebugPlus.Components;
 public class DisplayJson : MonoBehaviour
 {
     private readonly List<JsonDisplayInfo> _jsonDisplayInfos = [];
+    private static Material mat;
 
     public void RefreshDisplays(object obj, EventArgs e)
     {
@@ -39,34 +40,75 @@ public class DisplayJson : MonoBehaviour
     private void CreateJsonDisplays()
     {
         string filepath = "/BepInEx/plugins/points.json";
-        LocationsJson locationJson = JsonHelper.ParseJsonFromFile<LocationsJson>(filepath);
+        LocationsJson locationJson;
+        try
+        {
+            locationJson = JsonHelper.ParseJsonFromFile<LocationsJson>(filepath);
+        }
+        catch (Exception e)
+        {
+            Plugin.Log.LogError("Loading the json failed.\n Error:" + e.Message);
+            return;
+        }
+
+        if (locationJson == null || locationJson.locations == null)
+        {
+            Plugin.Log.LogError("Loading the json failed.\n Error: Missing locations in json, or JSON isn't properly formatted.");
+            return;
+        }
         //Plugin.Log.LogInfo(JsonHelper.SerializeJson(locationJson));
         string mapName = Singleton<EFT.GameWorld>.Instance.MainPlayer.Location.ToLower();
-        Plugin.Log.LogInfo("Loading: " + mapName);
+        Plugin.Log.LogInfo("Loading JSON for map: " + mapName);
 
         if (!locationJson.locations.ContainsKey(mapName))
         {
-            Plugin.Log.LogInfo("No entries on map: " + mapName);
+            Plugin.Log.LogInfo("No JSON entries on map: " + mapName);
             return;
         }
 
         foreach (JsonLocationEntry location in locationJson.locations[mapName])
         {
-            GameObject renderedObject = GameObject.CreatePrimitive(location.objectType);
-            renderedObject.GetComponent<Collider>().enabled = location.physics;
-            renderedObject.transform.position = location.coordinates;
-            renderedObject.transform.localScale = location.objectScale;
-            renderedObject.GetComponent<Renderer>().material.color = location.objectColor;
-            Plugin.Log.LogInfo(location.text);
-
-            var jsonDisplayInfo = new JsonDisplayInfo()
-            {
-                RenderedObject = renderedObject,
-                Content = GetJsonText(location)
-            };
-
-            _jsonDisplayInfos.Add(jsonDisplayInfo);
+            CreatPoint(location);
         }
+    }
+
+    private void CreatPoint(JsonLocationEntry location)
+    {
+        GameObject renderedObject = GameObject.CreatePrimitive(location.objectType);
+        renderedObject.GetComponent<Collider>().enabled = location.physics;
+        renderedObject.transform.position = location.coordinates;
+        renderedObject.transform.localScale = location.objectScale;
+        renderedObject.GetComponent<Renderer>().material = GetMaterial();
+        renderedObject.GetComponent<Renderer>().material.color = location.objectColor;
+        Plugin.Log.LogInfo(location.text);
+
+        var jsonDisplayInfo = new JsonDisplayInfo()
+        {
+            RenderedObject = renderedObject,
+            Content = GetJsonText(location)
+        };
+
+        _jsonDisplayInfos.Add(jsonDisplayInfo);
+    }
+
+    private Material GetMaterial()
+    {
+        if (mat == null)
+        {
+            Plugin.Log.LogInfo("Generating new material!");
+            mat = new Material(Shader.Find("Transparent/Diffuse"));
+
+            mat.SetOverrideTag("RenderType", "Transparent");
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+            mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
+        return mat;
     }
 
     private void Awake()
