@@ -12,7 +12,7 @@ namespace DebugPlus;
 [BepInPlugin("com.dirtbikercj.debugplus", "DebugPlus", BuildInfo.Version)]
 public class Plugin : BaseUnityPlugin
 {
-	public const int TarkovVersion = 35392;
+	public const int TarkovVersion = 36679;
 
 	public static Plugin Instance { get; private set; }
 	public static ManualLogSource Log { get; private set; }
