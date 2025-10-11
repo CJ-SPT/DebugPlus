@@ -19,6 +19,5 @@ public class OnGameStartedPatch : ModulePatch
         __instance.GetOrAddComponent<PlayerComponent>();
         __instance.GetOrAddComponent<SpawnPointDebug>();
         __instance.GetOrAddComponent<DoorDebug>();
-        __instance.GetOrAddComponent<DisplayJson>();
     }
 }

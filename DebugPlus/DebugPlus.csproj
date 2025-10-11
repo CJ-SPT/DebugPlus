@@ -125,19 +125,18 @@
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<ItemGroup>
 			<OutputDLL Include="$(ProjectDir)$(OutDir)$(TargetName).dll" />
-			<OutputJSON Include="$(ProjectDir)points.json" />
 		</ItemGroup>
 
 		<!-- Copies the output and resources to tarkov game folder -->
 		<Copy
-				SourceFiles="@(OutputDLL);@(OutputJSON);"
+				SourceFiles="@(OutputDLL);"
 				DestinationFolder="$(TarkovDir)BepInEx\plugins\%(RecursiveDir)"
 		/>
 
 		<!-- Creates a release zip file -->
 		<RemoveDir Directories="$(ProjectDir)release" />
 		<Copy
-				SourceFiles="@(OutputDLL);@(Resources);@(OutputJSON);"
+				SourceFiles="@(OutputDLL);@(Resources);"
 				DestinationFolder="$(ProjectDir)release\DebugPlus\BepInEx\plugins\%(RecursiveDir)"
 		/>
 		<ZipDirectory

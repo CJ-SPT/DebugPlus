@@ -47,8 +47,7 @@ internal static class DebugPlusConfig
     public static ConfigEntry<float> OverlayUpDist { get; private set; }
     public static ConfigEntry<bool> ShowSpawnPointOverlays { get; private set; }
     public static ConfigEntry<bool> ShowDoorOverlays { get; private set; }
-    public static ConfigEntry<bool> ShowJsonOverlay { get; private set; }
-
+    
     #endregion
 
     public static void InitConfig(ConfigFile config)
@@ -204,15 +203,6 @@ internal static class DebugPlusConfig
             false,
             new ConfigDescription(
                 "Shows overlay with information above door.",
-                null,
-                new ConfigurationManagerAttributes { })));
-
-        ConfigEntries.Add(ShowJsonOverlay = config.Bind(
-            Overlays,
-            "Json overlay",
-            false,
-            new ConfigDescription(
-                "Shows overlay custom information loaded from Json.",
                 null,
                 new ConfigurationManagerAttributes { })));
     }
