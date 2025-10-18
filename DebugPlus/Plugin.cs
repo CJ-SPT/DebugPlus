@@ -3,7 +3,10 @@ using BepInEx;
 using BepInEx.Logging;
 using DebugPlus.Config;
 using DebugPlus.Patches;
+using DebugPlus.ConsoleCommands;
 using DrakiaXYZ.VersionChecker;
+using EFT;
+using EFT.UI;
 
 #pragma warning disable
 
@@ -60,5 +63,20 @@ public class Plugin : BaseUnityPlugin
 		new OnGameStartedPatch().Enable();
 
 		#endregion
+		
+		#region OTHER
+		
+		new AfterApplicationLoadedPatch().Enable();
+		
+		#endregion
+		
+		RegisterCommands();
+	}
+
+	private static void RegisterCommands()
+	{
+		ConsoleScreen.Processor.RegisterCommand<SpawnBotsAsync>();
+		ConsoleScreen.Processor.RegisterCommand<ReloadFromServerAsync>();
+		ConsoleScreen.Processor.RegisterCommand<StartRaidAsync>();
 	}
 }

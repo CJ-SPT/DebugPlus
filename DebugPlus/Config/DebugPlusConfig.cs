@@ -14,6 +14,7 @@ internal static class DebugPlusConfig
     private const string Player = "Player";
     private const string BsgDebug = "BSG Debug Tools";
     private const string Overlays = "Overlays";
+    private const string Other = "Other";
 
     #region LOGGING
 
@@ -50,12 +51,19 @@ internal static class DebugPlusConfig
     
     #endregion
 
+    #region OTHER
+
+    public static ConfigEntry<bool> LoadIntoFactoryOnStart { get; private set; }
+
+    #endregion
+
     public static void InitConfig(ConfigFile config)
     {
         LoggingConfig(config);
         PlayerConfig(config);
         BsgDebugConfig(config);
         OverlayConfig(config);
+        OtherConfig(config);
 
         RecalcOrder();
     }
@@ -203,6 +211,18 @@ internal static class DebugPlusConfig
             false,
             new ConfigDescription(
                 "Shows overlay with information above door.",
+                null,
+                new ConfigurationManagerAttributes { })));
+    }
+
+    private static void OtherConfig(ConfigFile config)
+    {
+        ConfigEntries.Add(LoadIntoFactoryOnStart = config.Bind(
+            Other,
+            "Load into factory on start",
+            false,
+            new ConfigDescription(
+                "",
                 null,
                 new ConfigurationManagerAttributes { })));
     }
