@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using DebugPlus.Config;
 using DebugPlus.ConsoleCommands;
 using EFT;
 using HarmonyLib;
@@ -16,7 +17,7 @@ public class AfterApplicationLoadedPatch : ModulePatch
     [PatchPostfix]
     public static void PatchPostfix()
     {
-        if (TarkovApplication.Exist(out var app))
+        if (DebugPlusConfig.LoadIntoFactoryOnStart.Value && TarkovApplication.Exist(out var app))
         {
             app.InternalStartGame("factory4_day",true, true);
         }
