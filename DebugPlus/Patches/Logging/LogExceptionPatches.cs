@@ -1,9 +1,9 @@
 ﻿using DebugPlus.Config;
-using DebugPlus.Utils;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
+using DebugPlus.Extensions;
 using UnityEngine;
 
 namespace DebugPlus.Patches.Logging;

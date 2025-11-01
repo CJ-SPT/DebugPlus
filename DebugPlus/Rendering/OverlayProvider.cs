@@ -2,7 +2,7 @@
 using DebugPlus.Config;
 using UnityEngine;
 
-namespace DebugPlus.Utils;
+namespace DebugPlus.Rendering;
 
 /// <summary>
 /// Credits: DrakiaXYZ for the overlay code

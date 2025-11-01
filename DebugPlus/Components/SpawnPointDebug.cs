@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using DebugPlus.Config;
-using DebugPlus.Utils;
+using DebugPlus.Rendering;
 using EFT.Game.Spawning;
 using UnityEngine;
-using Object = UnityEngine.Object;
-using OCB = DebugPlus.Utils.OverlayContentBuilder;
+using OCB = DebugPlus.Rendering.OverlayContentBuilder;
 using Random = UnityEngine.Random;
 
 namespace DebugPlus.Components;

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DebugPlus.Config;
-using DebugPlus.Utils;
+using DebugPlus.Rendering;
 using EFT.Interactive;
 using UnityEngine;
 
-using OCB = DebugPlus.Utils.OverlayContentBuilder;
+using OCB = DebugPlus.Rendering.OverlayContentBuilder;
 
 namespace DebugPlus.Components;
 

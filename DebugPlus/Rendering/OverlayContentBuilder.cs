@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using UnityEngine;
 
-namespace DebugPlus.Utils;
+namespace DebugPlus.Rendering;
 
 public static class OverlayContentBuilder
 {

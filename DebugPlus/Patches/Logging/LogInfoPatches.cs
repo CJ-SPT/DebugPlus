@@ -3,6 +3,7 @@ using DebugPlus.Utils;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
+using DebugPlus.Extensions;
 using UnityEngine;
 
 namespace DebugPlus.Patches.Logging;
@@ -27,7 +28,7 @@ internal class LogPatch : ModulePatch
 
         if (message is string s)
         {
-            Plugin.Log.LogInfo(Format.FormatString(s));
+            Plugin.Log.LogInfo(FormatUtil.FormatString(s));
         }
     }
 }
@@ -52,7 +53,7 @@ internal class LogObjPatch : ModulePatch
 
         if (message is string s && !context)
         {
-            Plugin.Log.LogInfo(Format.FormatString(s));
+            Plugin.Log.LogInfo(FormatUtil.FormatString(s));
             return;
         }
 
@@ -78,7 +79,7 @@ internal class LogFormatPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityInfoLogging.Value) return;
 
-        Plugin.Log.LogInfo(Format.FormatString(format, args));
+        Plugin.Log.LogInfo(FormatUtil.FormatString(format, args));
     }
 }
 
@@ -100,6 +101,6 @@ internal class LogFormatObjPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityInfoLogging.Value) return;
 
-        Plugin.Log.LogInfo($"GameObject: {context} \nMessage : {Format.FormatString(format, args)}");
+        Plugin.Log.LogInfo($"GameObject: {context} \nMessage : {FormatUtil.FormatString(format, args)}");
     }
 }

@@ -3,6 +3,7 @@ using DebugPlus.Utils;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
+using DebugPlus.Extensions;
 using UnityEngine;
 
 namespace DebugPlus.Patches.Logging;
@@ -27,7 +28,7 @@ internal class LogErrorPatch : ModulePatch
 
         if (message.GetType() == typeof(string))
         {
-            Plugin.Log.LogError(Format.FormatString((string)message));
+            Plugin.Log.LogError(FormatUtil.FormatString((string)message));
             return;
         }
 
@@ -53,7 +54,7 @@ internal class LogErrorObjPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        Plugin.Log.LogError($"GameObject: {context}\nMessage: {Format.FormatString((string)message)}");
+        Plugin.Log.LogError($"GameObject: {context}\nMessage: {FormatUtil.FormatString((string)message)}");
     }
 }
 
@@ -75,7 +76,7 @@ internal class LogErrorFormatPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        Plugin.Log.LogError(Format.FormatString(format, args));
+        Plugin.Log.LogError(FormatUtil.FormatString(format, args));
     }
 }
 
@@ -97,6 +98,6 @@ internal class LogErrorFormatObjPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        Plugin.Log.LogError($"GameObject {context}\n{Format.FormatString(format, args)}");
+        Plugin.Log.LogError($"GameObject {context}\n{FormatUtil.FormatString(format, args)}");
     }
 }

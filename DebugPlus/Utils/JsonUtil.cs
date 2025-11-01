@@ -2,16 +2,18 @@ using System.IO;
 using Newtonsoft.Json;
 using System;
 
-public class JsonHelper
+namespace DebugPlus.Utils;
+
+public static class JsonUtil
 {
-    public static T ParseJsonFromFile<T>(string filepath)
+    public static T? ParseJsonFromFile<T>(string filepath)
     {
         filepath = Environment.CurrentDirectory + "/" + filepath;
         var json = File.ReadAllText(filepath);
         return ParseJson<T>(json);
     }
 
-    public static T ParseJson<T>(string json)
+    public static T? ParseJson<T>(string json)
     {
         return JsonConvert.DeserializeObject<T>(json);
     }
