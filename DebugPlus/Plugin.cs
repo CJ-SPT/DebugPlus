@@ -3,7 +3,6 @@ using BepInEx;
 using BepInEx.Logging;
 using DebugPlus.Config;
 using DebugPlus.ConsoleCommands;
-using DrakiaXYZ.VersionChecker;
 using EFT.UI;
 using SPT.Reflection.Patching;
 
@@ -13,10 +12,9 @@ namespace DebugPlus;
 public class Plugin : BaseUnityPlugin
 {
 	public const int TarkovVersion = 40087;
-
 	public static Plugin? Instance { get; private set; }
-	public static ManualLogSource Log { get; private set; }
-
+	public static ManualLogSource? Log { get; private set; }
+	
 	private PatchManager? _patchManager;
 	
 	internal void Awake()
@@ -26,11 +24,10 @@ public class Plugin : BaseUnityPlugin
 			throw new Exception("Invalid EFT Version");
 		}
 
-		Instance = this;
 		DontDestroyOnLoad(this);
-
+		
 		Log = Logger;
-
+		Instance = this;
 		DebugPlusConfig.InitConfig(Config);
 
 		_patchManager = new PatchManager(this, true);
