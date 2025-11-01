@@ -6,6 +6,7 @@
 	  <Description>Get better debugging information from EFT</Description>
 	  <Version>1.1.0</Version>
 	  <LangVersion>Latest</LangVersion>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -134,14 +135,14 @@
 		/>
 
 		<!-- Creates a release zip file -->
-		<RemoveDir Directories="$(ProjectDir)release" />
+		<RemoveDir Directories="$(SolutionDir)release" />
 		<Copy
 				SourceFiles="@(OutputDLL);@(Resources);"
-				DestinationFolder="$(ProjectDir)release\DebugPlus\BepInEx\plugins\%(RecursiveDir)"
+				DestinationFolder="$(SolutionDir)release\DebugPlus\BepInEx\plugins\%(RecursiveDir)"
 		/>
 		<ZipDirectory
-				SourceDirectory="$(ProjectDir)release\DebugPlus\"
-				DestinationFile="$(ProjectDir)release\DebugPlus-$(ConfigurationName)-$(Version)-$(SourceRevisionId).zip"
+				SourceDirectory="$(SolutionDir)release\DebugPlus\"
+				DestinationFile="$(SolutionDir)release\DebugPlus-$(ConfigurationName)-$(Version)-$(SourceRevisionId).zip"
 		/>
 	</Target>
 	

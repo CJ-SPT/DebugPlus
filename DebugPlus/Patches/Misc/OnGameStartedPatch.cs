@@ -4,7 +4,7 @@ using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 
-namespace DebugPlus.Patches;
+namespace DebugPlus.Patches.Misc;
 
 public class OnGameStartedPatch : ModulePatch
 {

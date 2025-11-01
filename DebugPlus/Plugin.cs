@@ -2,13 +2,10 @@
 using BepInEx;
 using BepInEx.Logging;
 using DebugPlus.Config;
-using DebugPlus.Patches;
 using DebugPlus.ConsoleCommands;
 using DrakiaXYZ.VersionChecker;
-using EFT;
 using EFT.UI;
-
-#pragma warning disable
+using SPT.Reflection.Patching;
 
 namespace DebugPlus;
 
@@ -17,9 +14,11 @@ public class Plugin : BaseUnityPlugin
 {
 	public const int TarkovVersion = 40087;
 
-	public static Plugin Instance { get; private set; }
+	public static Plugin? Instance { get; private set; }
 	public static ManualLogSource Log { get; private set; }
 
+	private PatchManager? _patchManager;
+	
 	internal void Awake()
 	{
 		if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
@@ -34,41 +33,8 @@ public class Plugin : BaseUnityPlugin
 
 		DebugPlusConfig.InitConfig(Config);
 
-		#region LOGGIN_PATCHES
-
-		new LogPatch().Enable();
-		new LogObjPatch().Enable();
-
-		new LogFormatPatch().Enable();
-		new LogFormatObjPatch().Enable();
-
-		new LogWarningPatch().Enable();
-		new LogWarningContextPatch().Enable();
-		new LogWarningFormatPatch().Enable();
-		new LogWarningFormatContextPatch().Enable();
-
-		new LogErrorPatch().Enable();
-		new LogErrorObjPatch().Enable();
-		new LogErrorFormatPatch().Enable();
-		new LogErrorFormatObjPatch().Enable();
-
-		new LogExceptionPatch().Enable();
-		new LogExceptionContextPatch().Enable();
-
-		#endregion
-
-		#region PLAYER_PATCHES
-
-		new GodModePatch().Enable();
-		new OnGameStartedPatch().Enable();
-
-		#endregion
-		
-		#region OTHER
-		
-		new AfterApplicationLoadedPatch().Enable();
-		
-		#endregion
+		_patchManager = new PatchManager(this, true);
+		_patchManager.EnablePatches();
 		
 		RegisterCommands();
 	}

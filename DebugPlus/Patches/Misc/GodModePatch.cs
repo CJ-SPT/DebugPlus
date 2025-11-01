@@ -5,7 +5,7 @@ using EFT.HealthSystem;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 
-namespace DebugPlus.Patches;
+namespace DebugPlus.Patches.Misc;
 
 /// <summary>
 /// God mode
