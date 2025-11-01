@@ -28,7 +28,7 @@ internal class LogPatch : ModulePatch
 
         if (message is string s)
         {
-            Plugin.Log.LogInfo(FormatUtil.FormatString(s));
+            Logger.LogInfo(FormatUtil.FormatString(s));
         }
     }
 }
@@ -53,11 +53,11 @@ internal class LogObjPatch : ModulePatch
 
         if (message is string s && !context)
         {
-            Plugin.Log.LogInfo(FormatUtil.FormatString(s));
+            Logger.LogInfo(FormatUtil.FormatString(s));
             return;
         }
 
-        Plugin.Log.LogInfo($"OBJECT: {message} : {context}");
+        Logger.LogInfo($"OBJECT: {message} : {context}");
     }
 }
 
@@ -79,7 +79,7 @@ internal class LogFormatPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityInfoLogging.Value) return;
 
-        Plugin.Log.LogInfo(FormatUtil.FormatString(format, args));
+        Logger.LogInfo(FormatUtil.FormatString(format, args));
     }
 }
 
@@ -101,6 +101,6 @@ internal class LogFormatObjPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityInfoLogging.Value) return;
 
-        Plugin.Log.LogInfo($"GameObject: {context} \nMessage : {FormatUtil.FormatString(format, args)}");
+        Logger.LogInfo($"GameObject: {context} \nMessage : {FormatUtil.FormatString(format, args)}");
     }
 }

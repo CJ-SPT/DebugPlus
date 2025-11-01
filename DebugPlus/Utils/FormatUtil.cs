@@ -16,22 +16,22 @@ internal static class FormatUtil
                 format = format.Replace("}", "}}");
 
                 // Find any instance of "{{\d}}" and unescape its brackets
-                format = Regex.Replace(format, @"{{(\d+)}}", "{$1}"); ;
+                format = Regex.Replace(format, @"{{(\d+)}}", "{$1}");
 
                 format = string.Format(format, args);
             }
         }
         catch (Exception)
         {
-            Plugin.Log.LogError($"Error formatting string: {format}");
+            Plugin.Log?.LogError($"Error formatting string: {format}");
 
-            if (args != null)
+            if (args == null) return string.Empty;
+            
+            for (var i = 0; i < args.Length; i++)
             {
-                for (int i = 0; i < args.Length; i++)
-                {
-                    Plugin.Log.LogError($"  args[{i}] = {args[i]}");
-                }
+                Plugin.Log?.LogError($"  args[{i}] = {args[i]}");
             }
+            
             return string.Empty;
         }
 
@@ -43,7 +43,7 @@ internal static class FormatUtil
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static string RemoveColorBrackets(string format)
+    private static string RemoveColorBrackets(string format)
     {
         return Regex.Replace(format, @"<color=(.*?)>(.*?)</color>", "$2");
     }

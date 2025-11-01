@@ -26,7 +26,7 @@ internal class LogExceptionPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityExceptionLogging.Value) return;
 
-        Plugin.Log.LogFatal(exception);
+        Logger.LogFatal(exception);
     }
 }
 
@@ -48,6 +48,6 @@ internal class LogExceptionContextPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityExceptionLogging.Value) return;
 
-        Plugin.Log.LogFatal($"GameObject: {context}\n {exception}");
+        Logger.LogFatal($"GameObject: {context}\n {exception}");
     }
 }

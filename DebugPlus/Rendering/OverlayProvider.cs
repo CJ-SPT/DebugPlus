@@ -9,13 +9,13 @@ namespace DebugPlus.Rendering;
 /// </summary>
 public class OverlayProvider : MonoBehaviour
 {
-	private GUIStyle guiStyle;
+	private GUIStyle? _guiStyle;
 	private float _screenScale = 1.0f;
 
-	private GUIContent _content = new();
-	private Rect _rect = new();
+	private readonly GUIContent _content = new();
+	private Rect _rect;
 
-	private Func<bool> _enabled;
+	private Func<bool>? _enabled;
 	
 	private void Awake()
 	{
@@ -27,26 +27,26 @@ public class OverlayProvider : MonoBehaviour
 	
 	private void OnGUI()
 	{
-		if (guiStyle is null)
+		if (_guiStyle is null)
 		{
 			CreateGuiStyle();
 		}
 
-		if (!_enabled()) return;
+		if (_enabled is null || !_enabled()) return;
 		
 		var pos = transform.position;
 		var dist = Mathf.RoundToInt((transform.position - Camera.main!.transform.position).magnitude);
 		
 		if (_content.text.Length <= 0 || !(dist < DebugPlusConfig.OverlayMaxDist.Value)) return;
 		
-		var screenPos = Camera.main!.WorldToScreenPoint(pos + (Vector3.up * DebugPlusConfig.OverlayUpDist.Value));
+		var screenPos = Camera.main.WorldToScreenPoint(pos + (Vector3.up * DebugPlusConfig.OverlayUpDist.Value));
 		
 		// Don't render behind the camera.
 		if (screenPos.z <= 0) return;
 		
 		SetRectSize(screenPos);
 		
-		GUI.Box(_rect, _content, guiStyle);
+		GUI.Box(_rect, _content, _guiStyle);
 	}
 
 	public void SetOverlayContent(string content, Func<bool> shouldShow)
@@ -59,11 +59,14 @@ public class OverlayProvider : MonoBehaviour
 	/// Sets the rect size for the overlay to render. Should be called in the implementing classes OnGUI()
 	/// </summary>
 	/// <param name="screenPos">Position on the screen</param>
-	/// <param name="content">Content of the GUI</param>
-	/// <param name="rect">Rect to modify</param>
 	private void SetRectSize(Vector3 screenPos)
 	{
-		var guiSize = guiStyle.CalcSize(_content);
+		if (_guiStyle is null)
+		{
+			CreateGuiStyle();
+		}
+		
+		var guiSize = _guiStyle!.CalcSize(_content);
 		_rect.x = (screenPos.x * _screenScale) - (guiSize.x / 2);
 		_rect.y = Screen.height - ((screenPos.y * _screenScale) + guiSize.y);
 		_rect.size = guiSize;
@@ -71,7 +74,7 @@ public class OverlayProvider : MonoBehaviour
 	
 	private void CreateGuiStyle()
 	{
-		guiStyle = new GUIStyle(GUI.skin.box)
+		_guiStyle = new GUIStyle(GUI.skin.box)
 		{
 			alignment = TextAnchor.MiddleLeft,
 			fontSize = DebugPlusConfig.OverlayFontSize.Value, // TODO: Add config for font size

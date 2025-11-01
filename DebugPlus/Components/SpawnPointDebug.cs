@@ -45,13 +45,13 @@ public class SpawnPointDebug : MonoBehaviour
 		foreach (var point in _spawnPointInfos)
 		{
 			point.Sphere.GetOrAddComponent<OverlayProvider>()
-				.SetOverlayContent(point.Content, Enable);
+				.SetOverlayContent(point.Content!, Enable);
 		}
 	}
 	
 	private void Awake()
 	{
-		RefreshZones(null, null);
+		RefreshZones(null!, null!);
 		
 		DebugPlusConfig.ShowSpawnPointOverlays.SettingChanged += RefreshZones; 
 	}
@@ -127,7 +127,7 @@ public class SpawnPointDebug : MonoBehaviour
 	
 	private class SpawnPointInfo
 	{
-		public GameObject Sphere;
-		public string Content;
+		public GameObject? Sphere;
+		public string? Content;
 	}
 }

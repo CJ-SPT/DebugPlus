@@ -8,14 +8,13 @@ namespace DebugPlus.Components;
 
 public class PlayerComponent : MonoBehaviour
 {
-    private static Player _player;
-
-    private static WeaponAnimEventsQueueDebug _weaponAnimDebug;
-    private static WeaponDurabilityDebug _weaponDuraDebug;
-    private static WeaponOverheatDebug _weaponOverHeatDebug;
-    private static MalfunctionDebug _weaponMalfDebug;
+    private Player? _player;
+    private WeaponAnimEventsQueueDebug? _weaponAnimDebug;
+    private WeaponDurabilityDebug? _weaponDuraDebug;
+    private WeaponOverheatDebug? _weaponOverHeatDebug;
+    private MalfunctionDebug? _weaponMalfDebug;
     
-    void Start()
+    private void Start()
     {
         _player = Singleton<GameWorld>.Instance.MainPlayer;
 
@@ -38,20 +37,20 @@ public class PlayerComponent : MonoBehaviour
         DebugComponents();
     }
 
-    private static void InfiniteStamina()
+    private void InfiniteStamina()
     {
-        if (!DebugPlusConfig.InfiniteStamina.Value) return;
+        if (!DebugPlusConfig.InfiniteStamina.Value || _player == null) return;
         
         _player.Physical.Stamina.Current = _player.Physical.Stamina.TotalCapacity.Value;
         _player.Physical.HandsStamina.Current = _player.Physical.HandsStamina.TotalCapacity.Value;
         _player.Physical.Oxygen.Current = _player.Physical.Oxygen.TotalCapacity.Value;
     }
 
-    private static void DebugComponents()
+    private void DebugComponents()
     {
-        _weaponAnimDebug.enabled = DebugPlusConfig.WeaponAnimEventsQueueDebug.Value;
-        _weaponDuraDebug.enabled = DebugPlusConfig.WeaponDuraDebug.Value;
-        _weaponOverHeatDebug.enabled = DebugPlusConfig.WeaponOverHeatDebug.Value;
-        _weaponMalfDebug.enabled = DebugPlusConfig.WeaponMalfDebug.Value;
+        _weaponAnimDebug!.enabled = DebugPlusConfig.WeaponAnimEventsQueueDebug.Value;
+        _weaponDuraDebug!.enabled = DebugPlusConfig.WeaponDuraDebug.Value;
+        _weaponOverHeatDebug!.enabled = DebugPlusConfig.WeaponOverHeatDebug.Value;
+        _weaponMalfDebug!.enabled = DebugPlusConfig.WeaponMalfDebug.Value;
     }
 }

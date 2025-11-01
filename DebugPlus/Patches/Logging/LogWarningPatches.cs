@@ -28,11 +28,11 @@ internal class LogWarningPatch : ModulePatch
 
         if (message is string s)
         {
-            Plugin.Log.LogWarning(FormatUtil.FormatString(s));
+            Logger.LogWarning(FormatUtil.FormatString(s));
             return;
         }
 
-        Plugin.Log.LogWarning(message);
+        Logger.LogWarning(message);
     }
 }
 
@@ -54,13 +54,13 @@ internal class LogWarningContextPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
-        if (message.GetType() == typeof(string))
+        if (message is string s)
         {
-            Plugin.Log.LogWarning($"GameObject: {context}\n{FormatUtil.FormatString((string)message)}");
+            Logger.LogWarning($"GameObject: {context}\n{FormatUtil.FormatString(s)}");
             return;
         }
 
-        Plugin.Log.LogWarning($"GameObject: {context}\n{message}");
+        Logger.LogWarning($"GameObject: {context}\n{message}");
     }
 }
 
@@ -82,7 +82,7 @@ internal class LogWarningFormatPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
-        Plugin.Log.LogWarning(FormatUtil.FormatString(format, args));
+        Logger.LogWarning(FormatUtil.FormatString(format, args));
     }
 }
 
@@ -104,6 +104,6 @@ internal class LogWarningFormatContextPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityWarningLogging.Value) return;
 
-        Plugin.Log.LogWarning($"GameObject: {context}\n{FormatUtil.FormatString(format, args)}");
+        Logger.LogWarning($"GameObject: {context}\n{FormatUtil.FormatString(format, args)}");
     }
 }

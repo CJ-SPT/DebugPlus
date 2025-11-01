@@ -26,13 +26,13 @@ internal class LogErrorPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        if (message.GetType() == typeof(string))
+        if (message is string s)
         {
-            Plugin.Log.LogError(FormatUtil.FormatString((string)message));
+            Logger.LogError(FormatUtil.FormatString(s));
             return;
         }
 
-        Plugin.Log.LogError($"OBJECT: {message}");
+        Logger.LogError($"OBJECT: {message}");
     }
 }
 
@@ -54,7 +54,7 @@ internal class LogErrorObjPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        Plugin.Log.LogError($"GameObject: {context}\nMessage: {FormatUtil.FormatString((string)message)}");
+        Logger.LogError($"GameObject: {context}\nMessage: {FormatUtil.FormatString((string)message)}");
     }
 }
 
@@ -76,7 +76,7 @@ internal class LogErrorFormatPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        Plugin.Log.LogError(FormatUtil.FormatString(format, args));
+        Logger.LogError(FormatUtil.FormatString(format, args));
     }
 }
 
@@ -98,6 +98,6 @@ internal class LogErrorFormatObjPatch : ModulePatch
     {
         if (!DebugPlusConfig.UnityErrorLogging.Value) return;
 
-        Plugin.Log.LogError($"GameObject {context}\n{FormatUtil.FormatString(format, args)}");
+        Logger.LogError($"GameObject {context}\n{FormatUtil.FormatString(format, args)}");
     }
 }
