@@ -6,7 +6,7 @@ using EFT.UI;
 
 namespace DebugPlus.ConsoleCommands;
 
-[ConsoleCommand("SpawnBots", "", "", "Spawns bots with specified WildSpawnType and number.")]
+[ConsoleCommand("spawn_bots", "", "", "Spawns bots with specified WildSpawnType and number.")]
 public class SpawnBotsAsync : AsyncCommand
 {
     private readonly WildSpawnType _wildSpawnType;

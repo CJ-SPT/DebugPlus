@@ -6,7 +6,7 @@ using EFT.UI;
 
 namespace DebugPlus.ConsoleCommands;
 
-[ConsoleCommand("StartRaid", "", "", "Starts a raid with the specified parameters")]
+[ConsoleCommand("start_raid", "", "", "Starts a raid with the specified parameters")]
 public class StartRaidAsync : AsyncCommand
 {
     private readonly string _mapId;

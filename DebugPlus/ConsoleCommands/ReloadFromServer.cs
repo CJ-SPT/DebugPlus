@@ -6,7 +6,7 @@ using EFT.UI;
 
 namespace DebugPlus.ConsoleCommands;
 
-[ConsoleCommand("ReloadFromServer", "", "", "Reloads all data from server")]
+[ConsoleCommand("recreate_backend", "", "", "Reloads all data from server")]
 public class ReloadFromServerAsync : AsyncCommand
 {
     public override object[] ArgumentsValue => [];
