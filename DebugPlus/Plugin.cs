@@ -2,10 +2,9 @@
 using BepInEx;
 using BepInEx.Logging;
 using DebugPlus.Config;
-using DebugPlus.Patches;
 using DebugPlus.ConsoleCommands;
+using DebugPlus.Patches;
 using DrakiaXYZ.VersionChecker;
-using EFT;
 using EFT.UI;
 
 #pragma warning disable
@@ -15,68 +14,68 @@ namespace DebugPlus;
 [BepInPlugin("com.dirtbikercj.debugplus", "DebugPlus", BuildInfo.Version)]
 public class Plugin : BaseUnityPlugin
 {
-	public const int TarkovVersion = 40087;
+    public const int TarkovVersion = 40743;
 
-	public static Plugin Instance { get; private set; }
-	public static ManualLogSource Log { get; private set; }
+    public static Plugin Instance { get; private set; }
+    public static ManualLogSource Log { get; private set; }
 
-	internal void Awake()
-	{
-		if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
-		{
-			throw new Exception("Invalid EFT Version");
-		}
+    internal void Awake()
+    {
+        if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
+        {
+            throw new Exception("Invalid EFT Version");
+        }
 
-		Instance = this;
-		DontDestroyOnLoad(this);
+        Instance = this;
+        DontDestroyOnLoad(this);
 
-		Log = Logger;
+        Log = Logger;
 
-		DebugPlusConfig.InitConfig(Config);
+        DebugPlusConfig.InitConfig(Config);
 
-		#region LOGGIN_PATCHES
+        #region LOGGIN_PATCHES
 
-		new LogPatch().Enable();
-		new LogObjPatch().Enable();
+        new LogPatch().Enable();
+        new LogObjPatch().Enable();
 
-		new LogFormatPatch().Enable();
-		new LogFormatObjPatch().Enable();
+        new LogFormatPatch().Enable();
+        new LogFormatObjPatch().Enable();
 
-		new LogWarningPatch().Enable();
-		new LogWarningContextPatch().Enable();
-		new LogWarningFormatPatch().Enable();
-		new LogWarningFormatContextPatch().Enable();
+        new LogWarningPatch().Enable();
+        new LogWarningContextPatch().Enable();
+        new LogWarningFormatPatch().Enable();
+        new LogWarningFormatContextPatch().Enable();
 
-		new LogErrorPatch().Enable();
-		new LogErrorObjPatch().Enable();
-		new LogErrorFormatPatch().Enable();
-		new LogErrorFormatObjPatch().Enable();
+        new LogErrorPatch().Enable();
+        new LogErrorObjPatch().Enable();
+        new LogErrorFormatPatch().Enable();
+        new LogErrorFormatObjPatch().Enable();
 
-		new LogExceptionPatch().Enable();
-		new LogExceptionContextPatch().Enable();
+        new LogExceptionPatch().Enable();
+        new LogExceptionContextPatch().Enable();
 
-		#endregion
+        #endregion
 
-		#region PLAYER_PATCHES
+        #region PLAYER_PATCHES
 
-		new GodModePatch().Enable();
-		new OnGameStartedPatch().Enable();
+        new GodModePatch().Enable();
+        new OnGameStartedPatch().Enable();
 
-		#endregion
-		
-		#region OTHER
-		
-		new AfterApplicationLoadedPatch().Enable();
-		
-		#endregion
-		
-		RegisterCommands();
-	}
+        #endregion
 
-	private static void RegisterCommands()
-	{
-		ConsoleScreen.Processor.RegisterCommand<SpawnBotsAsync>();
-		ConsoleScreen.Processor.RegisterCommand<ReloadFromServerAsync>();
-		ConsoleScreen.Processor.RegisterCommand<StartRaidAsync>();
-	}
+        #region OTHER
+
+        new AfterApplicationLoadedPatch().Enable();
+
+        #endregion
+
+        RegisterCommands();
+    }
+
+    private static void RegisterCommands()
+    {
+        ConsoleScreen.Processor.RegisterCommand<SpawnBotsAsync>();
+        ConsoleScreen.Processor.RegisterCommand<ReloadFromServerAsync>();
+        ConsoleScreen.Processor.RegisterCommand<StartRaidAsync>();
+    }
 }
