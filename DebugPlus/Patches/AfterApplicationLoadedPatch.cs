@@ -11,7 +11,7 @@ public class AfterApplicationLoadedPatch : ModulePatch
 {
     protected override MethodBase GetTargetMethod()
     {
-        return AccessTools.Method(typeof(TarkovApplication), "method_38");
+        return AccessTools.Method(typeof(TarkovApplication), nameof(TarkovApplication.OnApplicationLoaded));
     }
 
     [PatchPostfix]
