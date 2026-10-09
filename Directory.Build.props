@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Version>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)DebugPlus/VERSION.txt').Trim())</Version>
+    <TarkovDir Condition="'$(TarkovDir)' == ''">$(MSBuildThisFileDirectory)..\..\</TarkovDir>
+    <ManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</ManagedDir>
+    <BepInExDir>$(TarkovDir)BepInEx\</BepInExDir>
+    <ServerDir>$(TarkovDir)SPT_Runtime\</ServerDir>
+    <DeployDebugPlus Condition="'$(DeployDebugPlus)' == ''">false</DeployDebugPlus>
+  </PropertyGroup>
+</Project>

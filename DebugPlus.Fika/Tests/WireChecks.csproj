@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\WorkbenchPacket.cs" Link="WorkbenchPacket.cs" />
+    <ProjectReference Include="..\..\DebugPlus.Common\DebugPlus.Common.csproj" />
+    <Reference Include="Fika.Core" HintPath="$(BepInExDir)plugins\Fika\Fika.Core.dll" />
+    <Reference Include="Newtonsoft.Json" HintPath="$(ManagedDir)Newtonsoft.Json.dll" />
+  </ItemGroup>
+</Project>

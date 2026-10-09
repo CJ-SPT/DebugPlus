@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../DebugPlus/DebugPlus.csproj" />
+    <Compile Include="../../DebugPlus/Runtime/NativeItemSerialization.cs" Link="NativeItemSerialization.cs" />
+    <Reference Include="Assembly-CSharp" HintPath="$(ManagedDir)Assembly-CSharp.dll" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ManagedDir)UnityEngine.CoreModule.dll" />
+    <Reference Include="Newtonsoft.Json" HintPath="$(ManagedDir)Newtonsoft.Json.dll" />
+    <Reference Include="ItemTemplate.Types" HintPath="$(ManagedDir)ItemTemplate.Types.dll" />
+    <Reference Include="Comfort" HintPath="$(ManagedDir)Comfort.dll" />
+    <Reference Include="0Harmony" HintPath="$(ServerDir)0Harmony.dll" />
+  </ItemGroup>
+</Project>

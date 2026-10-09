@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Comfort.Common;
 using EFT;
 using EFT.Console.Core;
@@ -25,38 +25,11 @@ public class SpawnBotsAsync : AsyncCommand
 
     public override async Task Execute()
     {
-        if (!Singleton<IBotGame>.Instantiated)
-        {
-            ConsoleScreen.LogError("You can only spawn bots while in raid.");
-            return;
-        }
-
-        if (_numberOfBots <= 0)
-        {
-            ConsoleScreen.LogError(
-                $"Invalid number: {_numberOfBots}. Please enter a valid positive integer."
-            );
-            return;
-        }
-
-        var newBotData = new SpawnWave()
-        {
-            BotsCount = _numberOfBots,
-            Side = EPlayerSide.Savage,
-            SpawnAreaName = "",
-            Time = 0f,
-            WildSpawnType = _wildSpawnType,
-            IsPlayers = false,
-            Difficulty = BotDifficulty.hard,
-            ChanceGroup = 100f,
-            WithCheckMinMax = false,
-        };
-
-        ConsoleScreen.Log($"Spawning {_numberOfBots} bots... please wait.");
-
-        var botController = (IBotGame)Singleton<AbstractGame>.Instance;
-        await botController.BotsController.BotSpawner.ActivateBotsByWave(newBotData);
-
-        ConsoleScreen.Log($"SpawnNPC completed. {_numberOfBots} bots spawned.");
+        var runtime = DebugPlus.Runtime.WorkbenchRuntime.Instance;
+        if (!runtime) { ConsoleScreen.LogError("DebugPlus is not ready."); return; }
+        var result = await runtime.Submit(DebugPlus.Common.CommandKind.SpawnBots,
+            new DebugPlus.Common.CommandArguments { Role = _wildSpawnType.ToString(), Count = _numberOfBots, Difficulty = "hard" });
+        if (result.Status == DebugPlus.Common.CommandStatus.Completed) ConsoleScreen.Log(result.Message);
+        else ConsoleScreen.LogError(result.Message);
     }
 }

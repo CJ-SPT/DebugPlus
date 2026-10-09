@@ -17,9 +17,6 @@ public class AfterApplicationLoadedPatch : ModulePatch
     [PatchPostfix]
     public static void PatchPostfix()
     {
-        if (DebugPlusConfig.LoadIntoFactoryOnStart.Value && TarkovApplication.Exist(out var app))
-        {
-            app.InternalStartGame("factory4_day",true, true);
-        }
+        DebugPlus.Runtime.WorkbenchRuntime.Instance?.RefreshAccess();
     }
 }

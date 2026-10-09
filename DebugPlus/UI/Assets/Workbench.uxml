@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+  <ui:VisualElement name="workbench" class="workbench">
+    <ui:VisualElement name="titlebar" class="titlebar">
+      <ui:VisualElement class="brand-mark"><ui:Label text="D+" /></ui:VisualElement>
+      <ui:VisualElement class="brand-copy"><ui:Label text="DEBUGPLUS" class="brand-title" /><ui:Label text="GAME DEBUGGING WORKBENCH" class="eyebrow" /></ui:VisualElement>
+      <ui:VisualElement class="title-spacer" />
+      <ui:Label name="session-label" text="NO ACTIVE RAID" class="status-chip" />
+      <ui:Button name="close" text="×" tooltip="Close the workbench" class="close-button" />
+    </ui:VisualElement>
+    <ui:VisualElement class="toolbar">
+      <ui:TextField name="command-search" label="Search tools" tooltip="Try heal, spawn, weather, or teleport" class="command-search" />
+      <ui:DropdownField name="target" label="Player" class="target-picker" />
+    </ui:VisualElement>
+    <ui:VisualElement name="navigation" class="navigation" />
+    <ui:Label name="availability-note" class="availability-note" />
+    <ui:VisualElement class="workspace">
+      <ui:VisualElement class="main-column">
+        <ui:VisualElement class="page-heading"><ui:Label name="page-kicker" text="YOUR WORKBENCH" class="eyebrow accent" /><ui:Label name="page-title" text="Overview" class="page-title" /><ui:Label name="page-description" class="muted wrap" /></ui:VisualElement>
+        <ui:ScrollView name="content" class="page-content" />
+      </ui:VisualElement>
+      <ui:VisualElement class="inspector"><ui:Label text="CONTEXT" class="eyebrow accent" /><ui:Label name="context-title" text="Selected player" class="section-title" /><ui:ScrollView class="inspector-scroll"><ui:Label name="context-details" class="context-details wrap" /></ui:ScrollView></ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="feedback" class="feedback"><ui:Label name="feedback-status" text="READY" class="eyebrow accent" /><ui:Label name="feedback-message" text="Choose a tool to begin." class="feedback-message" /></ui:VisualElement>
+    <ui:Foldout name="activity-foldout" text="ACTIVITY" value="false" class="activity-foldout"><ui:ScrollView name="activity" class="activity-log" /></ui:Foldout>
+    <ui:VisualElement class="bottom-bar"><ui:Label name="shortcut-hint" text="F10   TOGGLE WORKBENCH" class="eyebrow" /><ui:VisualElement class="title-spacer" /><ui:Label name="authority-label" text="Checking access…" class="eyebrow" /><ui:Label name="performance-label" class="eyebrow" /><ui:VisualElement name="resize-handle" class="resize-handle"><ui:Label text="//" /></ui:VisualElement></ui:VisualElement>
+  </ui:VisualElement>
+</ui:UXML>

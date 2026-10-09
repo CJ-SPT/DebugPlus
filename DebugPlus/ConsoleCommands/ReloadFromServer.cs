@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Comfort.Common;
 using EFT;
 using EFT.Console.Core;
@@ -13,18 +13,10 @@ public class ReloadFromServerAsync : AsyncCommand
         
     public override async Task Execute()
     {
-        if (Singleton<GameWorld>.Instantiated)
-        {
-            ConsoleScreen.LogError("You can only reload data while not in raid.");
-            return;
-        }
-            
-        if (TarkovApplication.Exist(out var app))
-        {
-            await app.RecreateCurrentBackend();
-            return;
-        }
-            
-        ConsoleScreen.LogError("Could not locate TarkovApplication.");
+        var runtime = DebugPlus.Runtime.WorkbenchRuntime.Instance;
+        if (!runtime) { ConsoleScreen.LogError("DebugPlus is not ready."); return; }
+        var result = await runtime.Submit(DebugPlus.Common.CommandKind.ReloadBackend, new DebugPlus.Common.CommandArguments());
+        if (result.Status == DebugPlus.Common.CommandStatus.Completed) ConsoleScreen.Log(result.Message);
+        else ConsoleScreen.LogError(result.Message);
     }
 }

@@ -6,6 +6,8 @@ using DebugPlus.ConsoleCommands;
 using DebugPlus.Patches;
 using DrakiaXYZ.VersionChecker;
 using EFT.UI;
+using DebugPlus.Runtime;
+using DebugPlus.UI;
 
 #pragma warning disable
 
@@ -32,33 +34,21 @@ public class Plugin : BaseUnityPlugin
         Log = Logger;
 
         DebugPlusConfig.InitConfig(Config);
+        gameObject.AddComponent<DebugPlus.Logging.ClientLogging>();
+        var runtime = gameObject.AddComponent<WorkbenchRuntime>();
+        if (!runtime.IsHeadless) gameObject.AddComponent<WorkbenchWindow>();
 
         #region LOGGIN_PATCHES
 
-        new LogPatch().Enable();
-        new LogObjPatch().Enable();
-
-        new LogFormatPatch().Enable();
-        new LogFormatObjPatch().Enable();
-
-        new LogWarningPatch().Enable();
-        new LogWarningContextPatch().Enable();
-        new LogWarningFormatPatch().Enable();
-        new LogWarningFormatContextPatch().Enable();
-
-        new LogErrorPatch().Enable();
-        new LogErrorObjPatch().Enable();
-        new LogErrorFormatPatch().Enable();
-        new LogErrorFormatObjPatch().Enable();
-
-        new LogExceptionPatch().Enable();
-        new LogExceptionContextPatch().Enable();
+        // ClientLogging owns the consolidated Unity/native hooks and their lifetime.
 
         #endregion
 
         #region PLAYER_PATCHES
 
         new GodModePatch().Enable();
+        new GodModeHealthPatch().Enable();
+        new PauseBotUpdatePatch().Enable();
         new OnGameStartedPatch().Enable();
 
         #endregion
@@ -69,7 +59,7 @@ public class Plugin : BaseUnityPlugin
 
         #endregion
 
-        RegisterCommands();
+        if (!runtime.IsHeadless) RegisterCommands();
     }
 
     private static void RegisterCommands()

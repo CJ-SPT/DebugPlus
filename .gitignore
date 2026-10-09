@@ -455,3 +455,6 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+artifacts/
+!DebugPlus/UI/Assets/Workbench.tss

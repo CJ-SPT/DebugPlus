@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 
 namespace DebugPlus.Utils
 {
     internal static class Format
     {
-        public static string FormatString(string format, object[]? args = null)
+        public static string FormatString(string format, object[] args = null)
         {
             try
             {

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Comfort.Common;
 using EFT;
 using EFT.Console.Core;
@@ -27,18 +27,11 @@ public class StartRaidAsync : AsyncCommand
         
     public override async Task Execute()
     {
-        if (Singleton<GameWorld>.Instantiated)
-        {
-            ConsoleScreen.LogError("You cannot start a raid while already in a raid.");
-            return;
-        }
-            
-        if (TarkovApplication.Exist(out var app))
-        {
-            await app.InternalStartGame(_mapId, true, _isBotsEnabled);
-            return;
-        }
-            
-        ConsoleScreen.LogError("Could not locate TarkovApplication.");
+        var runtime = DebugPlus.Runtime.WorkbenchRuntime.Instance;
+        if (!runtime) { ConsoleScreen.LogError("DebugPlus is not ready."); return; }
+        var result = await runtime.Submit(DebugPlus.Common.CommandKind.StartRaid,
+            new DebugPlus.Common.CommandArguments { MapId = _mapId, Enabled = _isBotsEnabled });
+        if (result.Status == DebugPlus.Common.CommandStatus.Completed) ConsoleScreen.Log(result.Message);
+        else ConsoleScreen.LogError(result.Message);
     }
 }

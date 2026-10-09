@@ -21,6 +21,8 @@ public class SpawnPointDebug : MonoBehaviour
 	
 	public void RefreshZones(object obj, EventArgs e)
 	{
+		foreach (var old in _spawnPointInfos) if (old.Sphere) Destroy(old.Sphere);
+		_spawnPointInfos.Clear();
 		if (!Enable())
 		{
 			foreach (var point in _spawnPointInfos)
@@ -82,6 +84,7 @@ public class SpawnPointDebug : MonoBehaviour
 	private void CreateSpawnPointInfo(ISpawnPoint spawnPoint, BotZone zone, Color color)
 	{
 		var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		Destroy(sphere.GetComponent<Collider>());
 		sphere.transform.position = spawnPoint.Position;
 		sphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 				

@@ -21,7 +21,7 @@ public class OverlayProvider : MonoBehaviour
     private void Awake()
     {
         // If DLSS or FSR are enabled, set a screen scale value
-        if (!CameraManager.Instance.SSAA.isActiveAndEnabled)
+        if (CameraManager.Instance == null || !CameraManager.Instance.SSAA || !CameraManager.Instance.SSAA.isActiveAndEnabled)
             return;
 
         _screenScale =
@@ -36,7 +36,7 @@ public class OverlayProvider : MonoBehaviour
             CreateGuiStyle();
         }
 
-        if (!_enabled())
+        if (_enabled == null || !_enabled() || !Camera.main)
             return;
 
         var pos = transform.position;

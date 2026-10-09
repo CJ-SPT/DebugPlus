@@ -1,0 +1,6 @@
+{
+  "name": "DebugPlus.Workbench.AssetBuilder",
+  "rootNamespace": "DebugPlus.AssetBuild",
+  "includePlatforms": ["Editor"],
+  "autoReferenced": false
+}

@@ -1,148 +1,125 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-	  <AssemblyName>DebugPlus</AssemblyName>
-	  <Description>Get better debugging information from EFT</Description>
-	  <Version>1.1.0</Version>
-	  <LangVersion>Latest</LangVersion>
+    <AssemblyName>DebugPlus</AssemblyName>
+    <Description>Get better debugging information from EFT</Description>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
-
-	<PropertyGroup>
-		<TarkovDir Condition=" '$(TarkovDir)' == '' ">$(SolutionDir)..\..\</TarkovDir>
-		<TarkovPluginsSPTDir>$(TarkovDir)BepInEx\plugins\spt\</TarkovPluginsSPTDir>
-		<TarkovManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</TarkovManagedDir>
-		<TarkovBepInExCoreDir>$(TarkovDir)BepInEx\core\</TarkovBepInExCoreDir>
-		<TarkovDumpedAssemblyDir>$(TarkovDir)BepInEx\DumpedAssemblies\EscapeFromTarkov\</TarkovDumpedAssemblyDir>
-	</PropertyGroup>
-	
-	<ItemGroup>
-		<!-- Tarkov/Unity -->
-		<Reference Include="AnimationSystem.Types">
-			<HintPath>$(TarkovManagedDir)AnimationSystem.Types.dll</HintPath>
-		</Reference>
-		<Reference Include="Assembly-CSharp">
-			<HintPath>$(TarkovManagedDir)Assembly-CSharp.dll</HintPath>
-		</Reference>
-		<Reference Include="bsg.console.core">
-			<HintPath>$(TarkovManagedDir)bsg.console.core.dll</HintPath>
-		</Reference>
-		<Reference Include="Comfort">
-			<HintPath>$(TarkovManagedDir)Comfort.dll</HintPath>
-		</Reference>
-		<Reference Include="ItemComponent.Types">
-			<HintPath>$(TarkovManagedDir)ItemComponent.Types.dll</HintPath>
-		</Reference>
-		<Reference Include="Newtonsoft.Json">
-			<HintPath>$(TarkovManagedDir)Newtonsoft.Json.dll</HintPath>
-		</Reference>
-		<Reference Include="Sirenix.Serialization">
-			<HintPath>$(TarkovManagedDir)Sirenix.Serialization.dll</HintPath>
-		</Reference>
-		<Reference Include="Unity.TextMeshPro">
-			<HintPath>$(TarkovManagedDir)Unity.TextMeshPro.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine">
-			<HintPath>$(TarkovManagedDir)UnityEngine.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.AnimationModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.AnimationModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.AssetBundleModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.AudioModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.AudioModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.CoreModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.IMGUIModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.TextRenderingModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.TextRenderingModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.UI">
-			<HintPath>$(TarkovManagedDir)UnityEngine.UI.dll</HintPath>
-		</Reference>
-		<Reference Include="Unity.PostProcessing.Runtime">
-			<HintPath>$(TarkovManagedDir)Unity.PostProcessing.Runtime.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.PhysicsModule">
-			<HintPath>$(TarkovManagedDir)UnityEngine.PhysicsModule.dll</HintPath>
-		</Reference>
-
-		<!-- Harmony/Bepinex -->
-		<Reference Include="0Harmony">
-			<HintPath>$(TarkovBepInExCoreDir)0Harmony.dll</HintPath>
-		</Reference>
-		<Reference Include="BepinEx">
-			<HintPath>$(TarkovBepInExCoreDir)BepInEx.dll</HintPath>
-		</Reference>
-		<Reference Include="BepinEx.Preloader">
-			<HintPath>$(TarkovBepInExCoreDir)BepInEx.Preloader.dll</HintPath>
-		</Reference>
-
-		<!-- SPT -->
-		<Reference Include="spt-reflection">
-			<HintPath>$(TarkovPluginsSPTDir)spt-reflection.dll</HintPath>
-		</Reference>
-		<Reference Include="spt-custom">
-			<HintPath>$(TarkovPluginsSPTDir)spt-custom.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-
-	<!-- Gets the commit hash from git -->
-	<Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-		<Exec
-				Command="git describe --long --always --dirty --exclude=* --abbrev=8"
-				ConsoleToMSBuild="True"
-				IgnoreExitCode="False"
-		>
-			<Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
-		</Exec>
-	</Target>
-
-	<!-- Gets the version property from the VERSION.txt file -->
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<ItemGroup>
-			<VersionFile Include="VERSION.txt" />
-			<VersionCs Include="$(ProjectDir)Version.cs" />
-			<Compile Include="@(VersionCs)" Exclude="@(VersionCs)" /> <!-- Resolves double include -->
-			<FileWrites Include="@(VersionCs)" />
-		</ItemGroup>
-
-		<ReadLinesFromFile File="@(VersionFile)">
-			<Output TaskParameter="Lines" PropertyName="Version" />
-		</ReadLinesFromFile>
-
-		<!-- Write the version to Version.cs, kind of a hack to get version info into BepInEx -->
-		<WriteLinesToFile File="@(VersionCs)" Overwrite="true" Lines="// HACK: autogenerated file containing version info from VERSION.txt"/>
-		<WriteLinesToFile File="@(VersionCs)" Lines="namespace DebugPlus{public static class BuildInfo {public const string Version = &quot;$(Version)&quot;%3B}}"/>
-	</Target>
-
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<ItemGroup>
-			<OutputDLL Include="$(ProjectDir)$(OutDir)$(TargetName).dll" />
-		</ItemGroup>
-
-		<!-- Copies the output and resources to tarkov game folder -->
-		<Copy
-				SourceFiles="@(OutputDLL);"
-				DestinationFolder="$(TarkovDir)BepInEx\plugins\%(RecursiveDir)"
-		/>
-
-		<!-- Creates a release zip file -->
-		<RemoveDir Directories="$(ProjectDir)release" />
-		<Copy
-				SourceFiles="@(OutputDLL);@(Resources);"
-				DestinationFolder="$(ProjectDir)release\DebugPlus\BepInEx\plugins\%(RecursiveDir)"
-		/>
-		<ZipDirectory
-				SourceDirectory="$(ProjectDir)release\DebugPlus\"
-				DestinationFile="$(ProjectDir)release\DebugPlus-$(ConfigurationName)-$(Version)-$(SourceRevisionId).zip"
-		/>
-	</Target>
-	
+  <PropertyGroup>
+    <TarkovDir Condition=" '$(TarkovDir)' == '' ">$(SolutionDir)..\..\</TarkovDir>
+    <TarkovPluginsSPTDir>$(TarkovDir)BepInEx\plugins\spt\</TarkovPluginsSPTDir>
+    <TarkovManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</TarkovManagedDir>
+    <TarkovBepInExCoreDir>$(TarkovDir)BepInEx\core\</TarkovBepInExCoreDir>
+    <TarkovDumpedAssemblyDir>$(TarkovDir)BepInEx\DumpedAssemblies\EscapeFromTarkov\</TarkovDumpedAssemblyDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Tarkov/Unity -->
+    <Reference Include="NLog" HintPath="$(TarkovManagedDir)NLog.dll" Private="false" />
+    <Reference Include="AnimationSystem.Types">
+      <HintPath>$(TarkovManagedDir)AnimationSystem.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(TarkovManagedDir)Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="bsg.console.core">
+      <HintPath>$(TarkovManagedDir)bsg.console.core.dll</HintPath>
+    </Reference>
+    <Reference Include="Comfort">
+      <HintPath>$(TarkovManagedDir)Comfort.dll</HintPath>
+    </Reference>
+    <Reference Include="ItemComponent.Types">
+      <HintPath>$(TarkovManagedDir)ItemComponent.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(TarkovManagedDir)Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>$(TarkovManagedDir)Sirenix.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(TarkovManagedDir)Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(TarkovManagedDir)UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(TarkovManagedDir)UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PostProcessing.Runtime">
+      <HintPath>$(TarkovManagedDir)Unity.PostProcessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(TarkovManagedDir)UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <!-- Harmony/Bepinex -->
+    <Reference Include="0Harmony">
+      <HintPath>$(TarkovBepInExCoreDir)0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="BepinEx">
+      <HintPath>$(TarkovBepInExCoreDir)BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="BepinEx.Preloader">
+      <HintPath>$(TarkovBepInExCoreDir)BepInEx.Preloader.dll</HintPath>
+    </Reference>
+    <!-- SPT -->
+    <Reference Include="spt-reflection">
+      <HintPath>$(TarkovPluginsSPTDir)spt-reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="spt-custom">
+      <HintPath>$(TarkovPluginsSPTDir)spt-custom.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <!-- Gets the commit hash from git -->
+  <Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+    <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8" ConsoleToMSBuild="True" IgnoreExitCode="False">
+      <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
+    </Exec>
+  </Target>
+  <!-- Gets the version property from the VERSION.txt file -->
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <ItemGroup>
+      <VersionFile Include="VERSION.txt" />
+      <VersionCs Include="$(ProjectDir)Version.cs" />
+      <Compile Include="@(VersionCs)" Exclude="@(VersionCs)" />
+      <!-- Resolves double include -->
+      <FileWrites Include="@(VersionCs)" />
+    </ItemGroup>
+    <ReadLinesFromFile File="@(VersionFile)">
+      <Output TaskParameter="Lines" PropertyName="Version" />
+    </ReadLinesFromFile>
+    <!-- Write the version to Version.cs, kind of a hack to get version info into BepInEx -->
+    <WriteLinesToFile File="@(VersionCs)" Overwrite="true" Lines="// HACK: autogenerated file containing version info from VERSION.txt" />
+    <WriteLinesToFile File="@(VersionCs)" Lines="namespace DebugPlus{public static class BuildInfo {public const string Version = &quot;$(Version)&quot;%3B}}" />
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\DebugPlus.Common\DebugPlus.Common.csproj" />
+    <Reference Include="UnityEngine.UIElementsModule" HintPath="$(ManagedDir)UnityEngine.UIElementsModule.dll" Private="false" />
+    <Reference Include="UnityEngine.InputLegacyModule" HintPath="$(ManagedDir)UnityEngine.InputLegacyModule.dll" Private="false" />
+    <Reference Include="UnityEngine.TextCoreTextEngineModule" HintPath="$(ManagedDir)UnityEngine.TextCoreTextEngineModule.dll" Private="false" />
+    <Reference Include="UnityEngine.TextCoreFontEngineModule" HintPath="$(ManagedDir)UnityEngine.TextCoreFontEngineModule.dll" Private="false" />
+    <Reference Include="CommonExtensions" HintPath="$(ManagedDir)CommonExtensions.dll" Private="false" />
+    <Reference Include="ItemTemplate.Types" HintPath="$(ManagedDir)ItemTemplate.Types.dll" Private="false" />
+    <Reference Include="Comfort.Unity" HintPath="$(ManagedDir)Comfort.Unity.dll" Private="false" />
+    <Reference Include="DissonanceVoip" HintPath="$(ManagedDir)DissonanceVoip.dll" Private="false" />
+    <Reference Include="spt-common" HintPath="$(TarkovPluginsSPTDir)spt-common.dll" Private="false" />
+    <Reference Include="UnityEngine.AIModule" HintPath="$(ManagedDir)UnityEngine.AIModule.dll" Private="false" />
+  </ItemGroup>
 </Project>
