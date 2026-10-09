@@ -8,10 +8,5 @@
   <ItemGroup>
     <ProjectReference Include="../DebugPlus.Server.csproj" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <Reference Include="SPTarkov.Server.Core"><HintPath>$(ServerDir)SPTarkov.Server.Core.dll</HintPath></Reference>
-    <Reference Include="SPTarkov.Common"><HintPath>$(ServerDir)SPTarkov.Common.dll</HintPath></Reference>
-    <Reference Include="SPTarkov.DI"><HintPath>$(ServerDir)SPTarkov.DI.dll</HintPath></Reference>
-    <Reference Include="0Harmony"><HintPath>$(ServerDir)0Harmony.dll</HintPath></Reference>
-    <Reference Include="FastCloner"><HintPath>$(ServerDir)FastCloner.dll</HintPath></Reference>
   </ItemGroup>
 </Project>

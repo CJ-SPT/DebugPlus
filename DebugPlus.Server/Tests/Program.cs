@@ -294,7 +294,7 @@ Check(!service.Access(session).Authorized && (await service.Execute(session, Req
 
 // Applying the actual patches catches incompatible native parameter/return signatures offline.
 new Harmony("debugplus.tests.lifecycle").PatchAll(serverAssembly);
-Check(true, "native raid and inventory Harmony signatures bind on installed SPT");
+Check(true, $"native raid and inventory Harmony signatures bind on SPT {typeof(SaveServer).Assembly.GetName().Version}");
 Console.WriteLine($"PASS: {cases} focused server checks against shipped SPT templates; no live profiles loaded or written.");
 
 void Check(bool condition, string name) { if (!condition) throw new Exception("FAIL: " + name); cases++; Console.WriteLine("PASS: " + name); }

@@ -5,7 +5,8 @@
     <TarkovDir Condition="'$(TarkovDir)' == ''">$(MSBuildThisFileDirectory)..\..\</TarkovDir>
     <ManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</ManagedDir>
     <BepInExDir>$(TarkovDir)BepInEx\</BepInExDir>
-    <ServerDir>$(TarkovDir)SPT_Runtime\</ServerDir>
+    <!-- HarmonyX 2.16.0 is the first release with .NET 10 support. -->
+    <HarmonyXVersion>2.16.0</HarmonyXVersion>
     <DeployDebugPlus Condition="'$(DeployDebugPlus)' == ''">false</DeployDebugPlus>
   </PropertyGroup>
 </Project>

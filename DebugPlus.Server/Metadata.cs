@@ -9,7 +9,7 @@ public record ModMetadata : IModMetadata
     public string Name { get; init; } = "DebugPlus Server";
     public string Author { get; init; } = "CJ";
     public SemanticVersioning.Version Version { get; init; } = new(Protocol.ModVersion);
-    public SemanticVersioning.Range SptVersion { get; init; } = new("~4.1.5");
+    public SemanticVersioning.Range SptVersion { get; init; } = new("~4.1.0");
     public List<string>? Contributors { get; init; } = [];
     public List<string>? Incompatibilities { get; init; } = [];
     public Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = [];

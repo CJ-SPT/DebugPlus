@@ -8,6 +8,6 @@
     <Reference Include="Newtonsoft.Json" HintPath="$(ManagedDir)Newtonsoft.Json.dll" />
     <Reference Include="ItemTemplate.Types" HintPath="$(ManagedDir)ItemTemplate.Types.dll" />
     <Reference Include="Comfort" HintPath="$(ManagedDir)Comfort.dll" />
-    <Reference Include="0Harmony" HintPath="$(ServerDir)0Harmony.dll" />
+    <PackageReference Include="HarmonyX" Version="$(HarmonyXVersion)" />
   </ItemGroup>
 </Project>

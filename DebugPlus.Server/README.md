@@ -1,6 +1,8 @@
 # DebugPlus server component
 
-This component supplies the authoritative administrator policy and persistent main-menu inventory operations. It targets SPT 4.1.5 / .NET 10 and also guards the native raid lifecycle used by Fika 2.4.3.
+This component supplies the authoritative administrator policy and persistent main-menu inventory operations. It targets the SPT 4.1.0 API / .NET 10, accepts SPT 4.1.x, and also guards the native raid lifecycle used by Fika 2.4.3. The client remains tied to its supported EFT build.
+
+Server builds restore `SPTarkov.Server.Core` 4.1.0 and `HarmonyX` 2.16.0 from NuGet; no installed server DLLs are required. These are the minimum stable versions for the async raid lifecycle and .NET 10 patching respectively. SPT's package supplies Common, DI, SemanticVersioning 3.0.0 and FastCloner 3.5.5 transitively at its declared minimums. Runtime dependencies remain supplied by SPT and are not bundled with the mod.
 
 Install `DebugPlus.Server.dll` and the matching `DebugPlus.Common.dll` together under `SPT_Runtime/user/mods/DebugPlus/`. On the next user-controlled server startup, the component creates `config.json` beside its assembly if it does not exist:
 
@@ -45,4 +47,4 @@ dotnet build DebugPlus.Server/DebugPlus.Server.csproj --configuration Release -p
 dotnet run --project DebugPlus.Server/Tests/DebugPlus.Server.Tests.csproj --configuration Release -- 'F:/SPT 4.1.x/SPT_Runtime'
 ```
 
-The focused runner reads shipped database templates and constructs an isolated fixture. It never reads or writes live player profiles or launches the server. It verifies authorization, expired sessions, remote-target rejection, raid exclusion, native item/slot validation, remapped IDs, stale previews, split stacks, full stash, replacement rollback, duplicate requests, unresolved recovery, allowlist revocation, and installed native Harmony signatures. Profile storage success/failure is simulated for the fault-injection checks; live save, menu refresh, Fika listen-host/headless, reconnect, transit, and multiplayer visibility acceptance remain user-controlled.
+The focused runner uses the same NuGet dependencies as the server component, reads shipped database templates from the supplied path, and constructs an isolated fixture. That path supplies test data, not assembly references. It never reads or writes live player profiles or launches the server. It verifies authorization, expired sessions, remote-target rejection, raid exclusion, native item/slot validation, remapped IDs, stale previews, split stacks, full stash, replacement rollback, duplicate requests, unresolved recovery, allowlist revocation, and native Harmony signatures against the restored SPT version. Profile storage success/failure is simulated for the fault-injection checks; live save, menu refresh, Fika listen-host/headless, reconnect, transit, and multiplayer visibility acceptance remain user-controlled.
