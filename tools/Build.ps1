@@ -72,7 +72,22 @@ try {
     New-Item -ItemType Directory -Force -Path $releaseDirectory | Out-Null
     foreach ($component in $packages) {
         $releaseZip = Join-Path $releaseDirectory "$($component.Name)-$version-Release.zip"
-        Copy-Item -LiteralPath ($component.Root + '.zip') -Destination $releaseZip -Force
+        $pendingZip = Join-Path $releaseDirectory "$($component.Name)-$version-$stamp-Release.zip"
+        Copy-Item -LiteralPath ($component.Root + '.zip') -Destination $pendingZip
+        try {
+            if (Test-Path -LiteralPath $releaseZip) {
+                # Probe without writing; Windows can report a locked rename as access denied.
+                $probe = [IO.File]::Open($releaseZip, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, ([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
+                $probe.Dispose()
+            }
+            # Replace the completed archive atomically rather than truncating an existing release.
+            [IO.File]::Move($pendingZip, $releaseZip, $true)
+        } catch [IO.IOException] {
+            $fileError = $_.Exception.GetBaseException().HResult -band 0xffff
+            if ($fileError -notin @(32, 33)) { throw }
+            Write-Warning "Release archive is locked; kept the previous archive at '$releaseZip'. New package: '$pendingZip'."
+            $releaseZip = $pendingZip
+        }
         Write-Output "Package: $releaseZip"
     }
     if ($Action -ne 'Install') { return }

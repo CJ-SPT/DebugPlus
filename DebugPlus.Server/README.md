@@ -2,7 +2,7 @@
 
 This component supplies the authoritative administrator policy and persistent main-menu inventory operations. It targets the SPT 4.1.0 API / .NET 10, accepts SPT 4.1.x, and also guards the native raid lifecycle used by Fika 2.4.3. The client remains tied to its supported EFT build.
 
-Server builds restore `SPTarkov.Server.Core` 4.1.0 and `HarmonyX` 2.16.0 from NuGet; no installed server DLLs are required. These are the minimum stable versions for the async raid lifecycle and .NET 10 patching respectively. SPT's package supplies Common, DI, SemanticVersioning 3.0.0 and FastCloner 3.5.5 transitively at its declared minimums. Runtime dependencies remain supplied by SPT and are not bundled with the mod.
+Server builds restore `SPTarkov.Server.Core` 4.1.0 and `SPTarkov.Reflection` 4.1.0 from NuGet; no installed server DLLs are required. These retain the minimum stable SPT 4.1 baseline for the async raid lifecycle. Reflection supplies HarmonyX 2.16.1 transitively, while Core supplies Common, DI, SemanticVersioning 3.0.0 and FastCloner 3.5.5 at its declared minimums. Runtime dependencies remain supplied by SPT and are not bundled with the mod.
 
 Install `DebugPlus.Server.dll` and the matching `DebugPlus.Common.dll` together under `SPT_Runtime/user/mods/DebugPlus/`. On the next user-controlled server startup, the component creates `config.json` beside its assembly if it does not exist:
 
